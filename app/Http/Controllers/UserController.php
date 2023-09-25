@@ -9,9 +9,11 @@ use App\Models\TieuChi;
 use App\Models\LoaiDanhGia;
 use App\Models\DanhGia;
 use App\Models\dotDanhGia;
+use App\Models\thang;
+use App\Models\quy;
+use App\Models\nam;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 
 class UserController extends Controller
@@ -22,7 +24,15 @@ class UserController extends Controller
         $this->middleware(function ($request, $next) {
             $this->user = Auth::user();
             $cq = CoQuan::find($this->user->id_CQ);
-            view()->share('cq', $cq);
+            $thang = thang::all();
+            $quy = quy::all();
+            $nam = nam::all();
+            view()->share([
+                'cq'=> $cq,
+                'thang'=> $thang,
+                'quy'=> $quy,
+                'nam'=> $nam,
+            ]);
             return $next($request);
         });
     }
@@ -119,7 +129,6 @@ class UserController extends Controller
             $danhGia->save();
         }
         return redirect("/list")->with('alert', ['type' => 'success', 'message' => 'Thêm thông tin thành công !']);
-
     }
 
     /**

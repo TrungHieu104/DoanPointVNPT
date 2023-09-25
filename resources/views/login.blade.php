@@ -71,7 +71,7 @@
                 @endif
 
                     <div class="contact100-form-checkbox m-t-10">
-                        <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
+                        <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember">
                         <label class="label-checkbox100" for="ckb1">
                             Ghi nhớ đăng nhập
                         </label>

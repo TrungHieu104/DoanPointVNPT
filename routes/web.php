@@ -44,5 +44,32 @@ Route::group(['prefix' => 'dashboard','middleware' => 'role:1'], function () {
 });
 
 
+// 30;
+// Route::get('/m', function(){
+//     for ($i = 1; $i <= 12; $i++) {
+        
+//         DB::table('loaidanhgia')->insert([
+//             'id_thang' => $i,
+//             'id_nam' => 12,
+//         ]);
+//     }
+// });
+// Route::get('/q', function(){
+//     for ($i = 1; $i <= 4; $i++) {
+        
+//         DB::table('loaidanhgia')->insert([
+//             'id_quy' => $i,
+//             'id_nam' => 12,
+//         ]);
+//     }
+// });
+// Route::get('/y', function(){
+//         DB::table('loaidanhgia')->insert([
+//             'id_nam' => 12,
+//         ]);
+
+// });
+
+
 
 

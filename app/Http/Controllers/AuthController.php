@@ -19,11 +19,13 @@ class AuthController extends Controller
     function login_(Request $request)
     {
         $credentials = $request->only('email', 'password');
+        $remember = $request->has('remember');
 
         if (
-            auth()->guard('web')->attempt($credentials)
+            auth()->guard('web')->attempt($credentials, $remember)
         ) {
             $user = auth()->guard('web')->user();
+            
             if ($user->role == 1)
                 return redirect('/dashboard');
             else

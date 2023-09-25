@@ -18,81 +18,192 @@
         </div>
         <div class="table-data">
             <div class="accordion accordion-flush order" id="accordionFlushExample">
-                <div class="card">
-                    <div class="card-header">
-                        <h1 class="card-title text-center">Tạo đợt đánh giá</h1>
-                    </div>
-                    <div class="card-body">
-                        <form method="post" action="{{ route('list.store') }}">@csrf
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        @if (session('message'))
-                                            <div class="alert alert-danger">
-                                                {{ session('message') }}
-                                            </div>
-                                        @else
-                                            <accordion id="accordionFlushExample">
-                                                <accordion-item>
-                                                    <accordion-header>
-                                                        <accordion-button class="accordion-button fw-bold" type="button"
-                                                            data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
-                                                            aria-expanded="true" aria-controls="flush-collapseOne">
-                                                            Thông tin đợt đánh giá
-                                                        </accordion-button>
-                                                    </accordion-header>
-                                                    <accordion-collapse id="flush-collapseOne"
-                                                        class="accordion-collapse collapse show"
-                                                        data-bs-parent="#accordionFlushExample">
-                                                        <div class="accordion-body">
+                {{-- <div class="card"> --}}
+                <div class="card-header">
+                    <h1 class="card-title text-center">Tạo đợt đánh giá</h1>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{{ route('list.store') }}">@csrf
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    @if (session('message'))
+                                        <div class="alert alert-danger">
+                                            {{ session('message') }}
+                                        </div>
+                                    @else
+                                        <table class="table table-borderless">
+                                            <tr >
+                                                <th class="row">
+                                                    <label class="col-3 m-auto">
+                                                        Lựa chọn loại đánh giá
+                                                    </label>
+                                                    <label class="col-3 m-auto">
+                                                        <input type="radio" id="thangRadios" class="option-input radio"
+                                                            name="example" checked />
+                                                            Đánh giá theo tháng
+                                                    </label>
+                                                    <label class="col-3 m-auto">
+                                                        <input type="radio" id="quyRadios" class="option-input radio"
+                                                            name="example" />
+                                                            Đánh giá theo quý
+                                                    </label>
+                                                    <label class="col-3 m-auto">
+                                                        <input type="radio" id="namRadios" class="option-input radio"
+                                                            name="example" />
+                                                            Đánh giá theo năm
+                                                    </label>
+                                                </th>
+                                            </tr>
+                                      
+                                            <tr class="row">
+                                                {{-- <td class="col-4 px-4">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="exampleRadios"
+                                                        id="thangRadios" value="option1" checked>
+                                                        <label class="form-check-label" for="exampleRadios1">
+                                                            Đánh giá theo tháng
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                                <td class="col-4 px-4">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="exampleRadios"
+                                                        id="quyRadios" value="option2">
+                                                        <label class="form-check-label" for="exampleRadios2">
+                                                            Đánh giá theo quý
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                                <td class="col-4 px-4">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="exampleRadios"
+                                                        id="namRadios" value="option3">
+                                                        <label class="form-check-label" for="exampleRadios3">
+                                                            Đánh giá theo năm
+                                                        </label>
+                                                    </div>
+                                                </td> --}}
+                                                <td class="col-4 px-4">
+                                                    <select name="sl_month" class="form-select col-6 "
+                                                        aria-label="Default select example">
+                                                        <option selected>Lựa chọn tháng</option>
+                                                        @foreach ($thang as $thang)
+                                                            <option value="{{ $thang->id_thang }}">{{ $thang->thang }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </td>
 
-                                                            <table class="table table-bordered table-striped">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th scope="col">Tên Đợt</th>
-                                                                        @foreach ($tieuChis as $tieuChi)
-                                                                            <th scope="col">{{ $tieuChi->ten }}</th>
-                                                                        @endforeach
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <td>
-                                                                            <input name="tenDot" type="text"
-                                                                                class="form-control"
-                                                                                placeholder="Nhập tên đợt đánh giá">
-                                                                        </td>
-                                                                        @foreach ($tieuChis as $tieuChi)
-                                                                            <td>
-                                                                                <input name="diem[{{ $tieuChi->id_TC }}]"
-                                                                                    type="number" min="0"
-                                                                                    max="100" class="form-control"
-                                                                                    placeholder="Nhập điểm tối đa {{ $tieuChi->diemQuyDinh }} điểm">
-                                                                                <input name="link[{{ $tieuChi->id_TC }}]"
-                                                                                    type="text" class="form-control"
-                                                                                    placeholder="Nhập link">
-                                                                                <input name="ghiChu[{{ $tieuChi->id_TC }}]"
-                                                                                    type="text" class="form-control"
-                                                                                    placeholder="Nhập ghi chú">
-                                                                            </td>
-                                                                        @endforeach
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </accordion-collapse>
-                                                </accordion-item>
-                                            </accordion>
-                                            <button type="submit" class="btn btn-primary">Lưu</button>
-                                        @endif
-                                    </div>
+                                                <td class="col-4 px-4" id="test">
+                                                    <select style="display: none" name="sl_quy" class="form-select col-6 "
+                                                        aria-label="Default select example">
+                                                        <option selected>Lựa chọn quý</option>
+                                                        @foreach ($quy as $quy)
+                                                            <option value="{{ $quy->id_quy }}">{{ $quy->quy }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </td>
+
+                                                <td class="col-4 px-4">
+                                                    <select name="sl_year" class="form-select col-6 "
+                                                        aria-label="Default select example">
+                                                        <option selected>Lựa chọn năm</option>
+                                                        @foreach ($nam as $nam)
+                                                            <option value="{{ $nam->id_nam }}">{{ $nam->nam }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="col">Tên Đợt</th>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="input-group mb-3">
+                                                        <input name="tenDot" type="text" class="form-control"
+                                                            placeholder="Nhập tên đợt đánh giá">
+                                                        <button class="btn btn-outline-secondary dropdown-toggle"
+                                                            type="button" data-bs-toggle="dropdown"
+                                                            aria-expanded="false">Lựa chọn các tên đợt có sẵn</button>
+                                                        <ul class="dropdown-menu dropdown-menu-end">
+                                                            <li><a class="dropdown-item" href="#">Action</a></li>
+                                                            <li><a class="dropdown-item" href="#">Another action</a>
+                                                            </li>
+                                                            <li><a class="dropdown-item" href="#">Something else
+                                                                    here</a></li>
+                                                            <li>
+                                                                <hr class="dropdown-divider">
+                                                            </li>
+                                                            <li><a class="dropdown-item" href="#">Separated link</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            @foreach ($tieuChis as $tieuChi)
+                                                <tr>
+                                                    <th scope="col" rowspan="{{ $tieuChi->soLuongDiem }}">
+                                                        {{ $tieuChi->ten }}</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <input name="diem[{{ $tieuChi->id_TC }}]" type="number"
+                                                            min="0" max="100" class="form-control"
+                                                            placeholder="Nhập điểm tối đa {{ $tieuChi->diemQuyDinh }} điểm">
+                                                        <input name="link[{{ $tieuChi->id_TC }}]" type="text"
+                                                            class="form-control" placeholder="Nhập link">
+                                                        <input name="ghiChu[{{ $tieuChi->id_TC }}]" type="text"
+                                                            class="form-control" placeholder="Nhập ghi chú">
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </table>
+                                        <button type="submit" class="btn btn-primary">Lưu</button>
+                                    @endif
                                 </div>
                             </div>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
+                {{-- </div> --}}
 
 
             </div>
     </main>
+    <script>
+        // Lấy ra các radio button và select options
+        var radioThang = document.getElementById("thangRadios");
+        var radioQuy = document.getElementById("quyRadios");
+        var radioNam = document.getElementById("namRadios");
+        var selectMonth = document.querySelector("select[name='sl_month']");
+        var selectQuy = document.querySelector("select[name='sl_quy']");
+        var selectYear = document.querySelector("select[name='sl_year']");
+
+        // Bắt sự kiện khi radio button được chọn
+        radioThang.addEventListener("change", function() {
+            if (this.checked) {
+                selectMonth.style.display = 'block';
+                selectQuy.style.display = 'none';
+                selectYear.style.display = 'block';
+            }
+        });
+
+        radioQuy.addEventListener("change", function() {
+            if (this.checked) {
+                selectQuy.style.display = 'block';
+                selectMonth.style.display = 'none';
+                selectYear.style.display = 'block';
+            }
+        });
+
+        radioNam.addEventListener("change", function() {
+            if (this.checked) {
+                selectYear.style.display = 'block';
+                selectMonth.style.display = 'none';
+                selectQuy.style.display = 'none';
+            }
+        });
+        
+    </script>
 @endsection
