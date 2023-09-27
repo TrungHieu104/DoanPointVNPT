@@ -57,37 +57,11 @@
                                             </tr>
                                       
                                             <tr class="row">
-                                                {{-- <td class="col-4 px-4">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="radio" name="exampleRadios"
-                                                        id="thangRadios" value="option1" checked>
-                                                        <label class="form-check-label" for="exampleRadios1">
-                                                            Đánh giá theo tháng
-                                                        </label>
-                                                    </div>
-                                                </td>
+                                                
                                                 <td class="col-4 px-4">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="radio" name="exampleRadios"
-                                                        id="quyRadios" value="option2">
-                                                        <label class="form-check-label" for="exampleRadios2">
-                                                            Đánh giá theo quý
-                                                        </label>
-                                                    </div>
-                                                </td>
-                                                <td class="col-4 px-4">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="radio" name="exampleRadios"
-                                                        id="namRadios" value="option3">
-                                                        <label class="form-check-label" for="exampleRadios3">
-                                                            Đánh giá theo năm
-                                                        </label>
-                                                    </div>
-                                                </td> --}}
-                                                <td class="col-4 px-4">
-                                                    <select name="sl_month" class="form-select col-6 "
+                                                    <select name="thang" class="form-select col-6 "
                                                         aria-label="Default select example">
-                                                        <option selected>Lựa chọn tháng</option>
+                                                        <option selected value="">Lựa chọn tháng</option>
                                                         @foreach ($thang as $thang)
                                                             <option value="{{ $thang->id_thang }}">{{ $thang->thang }}
                                                             </option>
@@ -96,9 +70,9 @@
                                                 </td>
 
                                                 <td class="col-4 px-4" id="test">
-                                                    <select style="display: none" name="sl_quy" class="form-select col-6 "
+                                                    <select style="display: none" name="quy" class="form-select col-6 "
                                                         aria-label="Default select example">
-                                                        <option selected>Lựa chọn quý</option>
+                                                        <option selected value="">Lựa chọn quý</option>
                                                         @foreach ($quy as $quy)
                                                             <option value="{{ $quy->id_quy }}">{{ $quy->quy }}</option>
                                                         @endforeach
@@ -106,9 +80,9 @@
                                                 </td>
 
                                                 <td class="col-4 px-4">
-                                                    <select name="sl_year" class="form-select col-6 "
+                                                    <select name="nam" class="form-select col-6 "
                                                         aria-label="Default select example">
-                                                        <option selected>Lựa chọn năm</option>
+                                                        <option selected value="">Lựa chọn năm</option>
                                                         @foreach ($nam as $nam)
                                                             <option value="{{ $nam->id_nam }}">{{ $nam->nam }}</option>
                                                         @endforeach
@@ -122,7 +96,7 @@
                                                 <td>
                                                     <div class="input-group mb-3">
                                                         <input name="tenDot" type="text" class="form-control"
-                                                            placeholder="Nhập tên đợt đánh giá">
+                                                            placeholder="Nhập tên đợt đánh giá" value="text">
                                                         <button class="btn btn-outline-secondary dropdown-toggle"
                                                             type="button" data-bs-toggle="dropdown"
                                                             aria-expanded="false">Lựa chọn các tên đợt có sẵn</button>
@@ -150,7 +124,7 @@
                                                     <td>
                                                         <input name="diem[{{ $tieuChi->id_TC }}]" type="number"
                                                             min="0" max="100" class="form-control"
-                                                            placeholder="Nhập điểm tối đa {{ $tieuChi->diemQuyDinh }} điểm">
+                                                            placeholder="Nhập điểm tối đa {{ $tieuChi->diemQuyDinh }} điểm" value="2">
                                                         <input name="link[{{ $tieuChi->id_TC }}]" type="text"
                                                             class="form-control" placeholder="Nhập link">
                                                         <input name="ghiChu[{{ $tieuChi->id_TC }}]" type="text"
@@ -176,9 +150,9 @@
         var radioThang = document.getElementById("thangRadios");
         var radioQuy = document.getElementById("quyRadios");
         var radioNam = document.getElementById("namRadios");
-        var selectMonth = document.querySelector("select[name='sl_month']");
-        var selectQuy = document.querySelector("select[name='sl_quy']");
-        var selectYear = document.querySelector("select[name='sl_year']");
+        var selectMonth = document.querySelector("select[name='thang']");
+        var selectQuy = document.querySelector("select[name='quy']");
+        var selectYear = document.querySelector("select[name='nam']");
 
         // Bắt sự kiện khi radio button được chọn
         radioThang.addEventListener("change", function() {

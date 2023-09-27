@@ -28,10 +28,10 @@ class UserController extends Controller
             $quy = quy::all();
             $nam = nam::all();
             view()->share([
-                'cq'=> $cq,
-                'thang'=> $thang,
-                'quy'=> $quy,
-                'nam'=> $nam,
+                'cq' => $cq,
+                'thang' => $thang,
+                'quy' => $quy,
+                'nam' => $nam,
             ]);
             return $next($request);
         });
@@ -39,46 +39,34 @@ class UserController extends Controller
 
     function index()
     {
-        // $currentMonth = Carbon::now()->month;
-        // $currentQuarter = (int) (($currentMonth - 1) / 3) + 1;
-        // $currentYear = Carbon::now()->year;
-
         $dataCQ = CoQuan::all();
         $dataLDG = LoaiDanhGia::all();
-
-
-        // $id_LDG_current = LoaiDanhGia::where('thang', $currentMonth)
-        //     ->where('quy', $currentQuarter)
-        //     ->where('nam', $currentYear)
-        //     ->first();
-
         // $cq = CoQuan::find($this->user->id_CQ);
         // $dataTC = TieuChi::where('id_LDG', $id_LDG_current->id_LDG)->get();
-
         // $dataDG = DB::table('danhgia')
         //     ->where('id_ND', $this->user->id)
         //     ->where('id_LDG', $id_LDG_current->id_LDG)
         //     ->get('diemTuCham');
-
-
-
         return view("user.home", [
             'dataCQ' => $dataCQ,
             // 'dataTC' => $dataTC,
             // 'dataLDG' => $dataLDG,
-            // 'id_LDG_current' => $id_LDG_current,
             // 'dataDG' => $dataDG,
-            // 'currentMonth' => $currentMonth,
-            // 'currentQuarter' => $currentQuarter,
-            // 'currentYear' => $currentYear,
         ]);
     }
     function list()
     {
-        $data_list_point = dotDanhGia::where('id_ND', $this->user->id)->get();
+        $perpage = 5;
+        $data_list_point = dotDanhGia::where('id_ND', $this->user->id)->orderby('id_DDG', 'desc')->paginate($perpage)->withQueryString();
+        foreach ($data_list_point as $dtlp) {
+            // $dtlp->id_LDG;
+            $id_LDG= LoaiDanhGia::find($dtlp->id_LDG);
+            //lưu vào session để show ra từng id_LDG theo tung dot
+        }
         return view("user.point.list", [
             'title' => 'Danh sách',
             'data_list_point' => $data_list_point,
+            'id_LDG' => $id_LDG,
         ]);
     }
 
@@ -109,12 +97,61 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $loaiDanhGia = new LoaiDanhGia;
+        $id_LDG = null;
+        $thang = $request['thang'];
+        $quy = $request['quy'];
+        $nam = $request['nam'];
+
+        if ($thang !== null && $nam !== null) {
+            $id_LDG = LoaiDanhGia::where('id_thang', $thang)
+                ->where('id_quy', null)
+                ->where('id_nam', $nam)
+                ->value('id_LDG');
+        } else if ($quy !== null && $nam !== null) {
+            $id_LDG = LoaiDanhGia::where('id_thang', null)
+                ->where('id_quy', $quy)
+                ->where('id_nam', $nam)
+                ->value('id_LDG');
+        } else if ($nam !== null) {
+
+            $id_LDG = LoaiDanhGia::where('id_thang', null)
+                ->where('id_quy', null)
+                ->where('id_nam', $nam)
+                ->value('id_LDG');
+
+        }
+        // So sánh các id trong table loaidanhgia và lấy id_LDG trùng khớp ra
+        // -------------------->dieukiendacheckOK chỉ lấy tháng và năm k lấy quý
+        // if ($thang !== null && $nam !== null) {
+        //     $id_LDG = LoaiDanhGia::where('id_thang', $thang)->where('id_quy',null)->where('id_nam', $nam)->value('id_LDG');
+        // }
+        // -------------------->dieukiendacheckOK chỉ lấy quý & năm k lấy tháng
+        // if ($quy !== null && $nam !== null) {
+        //     $id_LDG = LoaiDanhGia::where('id_thang', null)
+        //     ->where('id_quy', $quy)
+        //     ->where('id_nam', $nam)
+        //     ->value('id_LDG');
+        // }
+        // -------------------->dieukiendacheckOK chỉ lấy năm
+        // if ($nam !== null) {
+        //     $id_LDG = LoaiDanhGia::where('id_thang', null)
+        //     ->where('id_quy', null)
+        //     ->where('id_nam', $nam)
+        //     ->value('id_LDG');
+        // }
+
+        if ($id_LDG === null) {
+            return redirect("/list")->with('alert', ['type' => 'danger', 'message' => 'Lỗi mã bị bỏ trống!']);
+        }
+
+
         //save dotDanhGia
         $dotDanhGia = new dotDanhGia;
         $dotDanhGia->tenDot = $request['tenDot'];
         $dotDanhGia->id_CQ = $this->user->id_CQ;
         $dotDanhGia->id_ND = $this->user->id;
-        $dotDanhGia->id_LDG = 9;
+        $dotDanhGia->id_LDG = $id_LDG;
         $dotDanhGia->trangThai = 1;
         $dotDanhGia->save();
         //save danhGia
@@ -159,27 +196,6 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    // public function update(Request $request, string $id)
-    // {
-    //     // Lấy danh sách tiêu chí
-    //     $tieuChis = TieuChi::where('id_CQ', $this->user->id_CQ)->get();
-
-    //     // Cập nhật thông tin đợt đánh giá
-    //     $dotDanhGia = dotDanhGia::findOrFail($id);
-    //     $dotDanhGia->tenDot = $request->tenDot;
-    //     $dotDanhGia->trangThai = 1;
-    //     $dotDanhGia->save();
-
-    //     // Cập nhật thông tin điểm đánh giá
-    //     foreach ($tieuChis as $tieuChi) {
-    //         $danhGia = DanhGia::firstOrNew(['id_DDG' => $id, 'id_TC' => $tieuChi->id_TC]);
-    //         $danhGia->diem = $request->diem[$tieuChi->id_TC];
-    //         $danhGia->link = $request->link[$tieuChi->id_TC];
-    //         $danhGia->ghiChu = $request->ghiChu[$tieuChi->id_TC];
-    //         $danhGia->save();
-    //     }
-    //     return redirect("/list")->with('alert', ['type' => 'success', 'message' => 'Cập nhật thông tin thành công !']);
-    // }
     public function update(Request $request, string $id)
     {
         // Lấy danh sách tiêu chí
@@ -202,9 +218,6 @@ class UserController extends Controller
         }
         return redirect("/list")->with('alert', ['type' => 'success', 'message' => 'Cập nhật thông tin thành công !']);
     }
-
-
-
     /**
      * Remove the specified resource from storage.
      */
@@ -223,7 +236,7 @@ class UserController extends Controller
         //xóa đợt đánh giá
         $dotDanhGia->delete();
 
-        return back()->with('alert', ['type' => 'danger', 'message' => 'Xóa thông tin thành công !']);
+        return redirect('/list')->with('alert', ['type' => 'success', 'message' => 'Xóa thông tin thành công !']);
     }
 
 

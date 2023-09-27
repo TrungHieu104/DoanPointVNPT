@@ -1,5 +1,8 @@
 @extends('user.layout')
 @section('content')
+    <style>
+
+    </style>
     <main>
         <div class="head-title">
             <div class="left">
@@ -47,7 +50,7 @@
                             @foreach ($data_list_point as $dlp)
                                 <tr>
                                     <th scope="row">{{ $dlp->id_DDG }}</th>
-                                    <td>{{ $dlp->tenDot }}</td>
+                                    <td>{{ $dlp->tenDot }} - Loai: {{ $id_LDG }}</td>
                                     <td>{{ date('H:i - d/m/Y', strtotime($dlp->date)) }}</td>
                                     <td>
                                         @if ($dlp->trangThai == 0)
@@ -75,9 +78,13 @@
                                                 action="{{ route('list.destroy', $dlp->id_DDG) }}" method="POST">
                                                 @csrf @method('DELETE')
                                                 <button class="btn btn-outline-danger" style="border: none;cursor: pointer;"
-                                                    type='submit' onclick="return confirm('Xóa hả')">
+                                                    type='submit'>
                                                     <i class='bx bx-trash'></i>
                                                 </button>
+                                                {{-- <button class="btn btn-outline-danger" style="border: none;cursor: pointer;"
+                                                    type='submit' onclick="return confirm('Xóa hả')">
+                                                    <i class='bx bx-trash'></i>
+                                                </button> --}}
                                             </form>
                                         </div>
                                     </td>
@@ -85,6 +92,46 @@
                             @endforeach
                         </tbody>
                     </table>
+                    <div class="pagination-container">
+                        <ul class="pagination">
+                            <!-- Previous Page Link -->
+                            @if ($data_list_point->onFirstPage())
+                                <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+                            @else
+                                <li class="page-item"><a class="page-link"
+                                        href="{{ $data_list_point->previousPageUrl() }}">&laquo;</a></li>
+                            @endif
+
+                            <!-- Pagination Elements -->
+                            @foreach ($data_list_point->onEachSide(1)->links()->elements as $element)
+                                <!-- "Three Dots" Separator -->
+                                @if (is_string($element))
+                                    <li class="page-item disabled"><span class="page-link">{{ $element }}</span></li>
+                                @endif
+
+                                <!-- Array Of Links -->
+                                @if (is_array($element))
+                                    @foreach ($element as $page => $url)
+                                        @if ($page == $data_list_point->currentPage())
+                                            <li class="page-item active"><span class="page-link">{{ $page }}</span>
+                                            </li>
+                                        @else
+                                            <li class="page-item"><a class="page-link"
+                                                    href="{{ $url }}">{{ $page }}</a></li>
+                                        @endif
+                                    @endforeach
+                                @endif
+                            @endforeach
+
+                            <!-- Next Page Link -->
+                            @if ($data_list_point->hasMorePages())
+                                <li class="page-item"><a class="page-link"
+                                        href="{{ $data_list_point->nextPageUrl() }}">&raquo;</a></li>
+                            @else
+                                <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+                            @endif
+                        </ul>
+                    </div>
                 @endif
             </div>
         </div>

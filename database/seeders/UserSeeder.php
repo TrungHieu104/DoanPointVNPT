@@ -41,15 +41,6 @@ class UserSeeder extends Seeder
             ]);
         }
     }
-    function a()  {
-        for ($i = 1; $i <= 12; $i++) {
-    
-            DB::table('loaidanhgia')->insert([
-                'id_thang' => $i,
-                'id_nam' => 1,
-            ]);
-        }
-    }
     
     
 }

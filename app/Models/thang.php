@@ -13,4 +13,5 @@ class thang extends Model
     protected $fillable = [
         'thang',
     ];
+    
 }

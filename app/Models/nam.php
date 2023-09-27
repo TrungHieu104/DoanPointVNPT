@@ -13,4 +13,8 @@ class nam extends Model
     protected $fillable = [
         'nam',
     ];
+    // public function nam()
+    // {
+    //     return $this->belongsTo(nam::class, 'id_nam');
+    // }
 }

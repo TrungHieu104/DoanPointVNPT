@@ -15,4 +15,8 @@ class LoaiDanhGia extends Model
         'id_quy',
         'id_nam',
     ];
+    public function nam()
+    {
+        return $this->hasMany(nam::class, 'id_nam');
+    }
 }

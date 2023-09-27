@@ -967,3 +967,24 @@ nav .profile .profile-link a:hover {
 		opacity: 0;
 	}
 }
+/* pagination */
+.pagination{
+	display: flex;
+	justify-content: center;
+	--bs-pagination-active-bg: var(--dark-green);
+	--bs-pagination-disabled-bg: transparent;
+	
+}
+ul.pagination li.page-item{
+	margin: 10px 10px 0 5px;
+	/* border: 2px red solid; */
+}
+.page-link{
+	color: #000;
+	border: none;
+	background: transparent;
+	border-radius: 20%;
+}
+ul.pagination li.disable{
+	background: red;
+}
