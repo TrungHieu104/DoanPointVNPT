@@ -38,7 +38,7 @@
                                                         class="form-control" placeholder="Nhập tên đợt đánh giá">
                                                 </td>
                                             </tr>
-                                            @foreach ($tieuChis as $tieuChi)
+                                            @foreach ($tieuChis as $tieuChi) 
                                                 <tr>
                                                     <th scope="col">{{ $tieuChi->ten }}</th>
                                                 </tr>

@@ -164,16 +164,3 @@ function showTask(){
 }
 showTask();
 
-// script show input tag follow radio input
-        // function showMonth() {
-        //     document.getElementById('selected').innerHTML = '<select name="sl_month" class="form-select" aria-label="Default select example"><option selected>Lựa chọn tháng</option><option value="1">{{$cq->ten}}</option></select>';
-        // }
-
-        // function showQuy() {
-        //     document.getElementById('selected').innerHTML = '<select name="sl_quy" class="form-select" aria-label="Default select example"><option selected>Lựa chọn quý</option><option value="1">One</option></select>';
-        // }
-        // function showYear() {
-        //     document.getElementById('selected').innerHTML = '<select name="sl_year" class="form-select" aria-label="Default select example"><option selected>Lựa chọn năm</option><option value="1">One</option></select>';
-        // }
-		
-		

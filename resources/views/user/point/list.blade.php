@@ -1,15 +1,15 @@
 @extends('user.layout')
 @section('content')
-    <style>
-
-    </style>
     <main>
         <div class="head-title">
             <div class="left">
-                <h1>Danh sách điểm Đoàn viên {{ Auth::user()->ten }}</h1>
+                <h1>Danh sách điểm Đoàn viên
+                    {{ Auth::user()->ten }}
+                </h1>
+
                 <ul class="breadcrumb">
                     <li>
-                        <a href="#">Bảng điều khiển</a>
+                        <a href="#" data-bs-toggle="tooltip">Bảng điều khiển</a>
                     </li>
                     <li><i class='bx bx-chevron-right'></i></li>
                     <li>
@@ -43,16 +43,54 @@
                                 <th scope="col">Thời gian đánh giá</th>
                                 <th scope="col">Trạng thái</th>
                                 <th scope="col">Ghi chú / Yêu cầu</th>
-                                <th scope="col">Chức năng</th>
+                                <th scope="col" class="text-center">Chức năng</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($data_list_point as $dlp)
                                 <tr>
-                                    <th scope="row">{{ $dlp->id_DDG }}</th>
-                                    <td>{{ $dlp->tenDot }} - Loai: {{ $id_LDG }}</td>
-                                    <td>{{ date('H:i - d/m/Y', strtotime($dlp->date)) }}</td>
+                                    <th class="pt-4" scope="row">{{ $dlp->id_DDG }}</th>
                                     <td>
+                                        <div class="tooltip">
+                                            <span class="tooltiptext">
+                                                @foreach ($tieuChis as $tc)
+                                                    {{ $tc->ten . '   :   ' }}
+                                                    @foreach ($danhGias as $dg)
+                                                        @if ($dlp->id_DDG == $dg->id_DDG && $dg->id_TC == $tc->id_TC)
+                                                            {{ $dg->diem }}<br>
+                                                        @endif
+                                                    @endforeach
+                                                @endforeach
+                                            </span>
+                                            {{ $dlp->tenDot }}
+                                            <br>
+                                            <sub>
+                                                <i>
+                                                    @foreach ($data_LDG as $dldg)
+                                                        @if ($dlp->id_LDG == $dldg->id_LDG)
+                                                            @foreach ($nam as $year)
+                                                                @if ($year->id_nam == $dldg->id_nam)
+                                                                    @if ($dldg->id_thang !== null && $dldg->id_nam !== null)
+                                                                        {{ 'Tháng : ' . $dldg->id_thang }}
+                                                                        {{ 'Năm : ' . $year->nam }}
+                                                                    @else
+                                                                        @if ($dldg->id_quy !== null && $dldg->id_nam !== null)
+                                                                            {{ 'Quý : ' . $dldg->id_quy }}
+                                                                            {{ 'Năm : ' . $year->nam }}
+                                                                        @else
+                                                                            {{ 'Năm : ' . $year->nam }}
+                                                                        @endif
+                                                                    @endif
+                                                                @endif
+                                                            @endforeach
+                                                        @endif
+                                                    @endforeach
+                                                </i>
+                                            </sub>
+                                        </div>
+                                    </td>
+                                    <td>{{ date('H:i - d/m/Y', strtotime($dlp->date)) }}</td>
+                                    <td class="pt-4">
                                         @if ($dlp->trangThai == 0)
                                             <span class="alert alert-danger"><i class='bx bx-x'></i> Chưa hoàn thành</span>
                                         @else
@@ -74,21 +112,47 @@
                                                 <a href="{{ route('list.edit', $dlp->id_DDG) }}" style="border:none;"
                                                     class="btn btn-outline-success"><i class='bx bx-edit'></i></a>
                                             </button>
-                                            <form class="btn btn-outline-danger"
+                                            <button class="btn btn-outline-danger" style="padding: 0 25px"
+                                                type='button' data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                                <i class='bx bx-trash'></i>
+                                            </button>
+                                            {{-- <form class="btn btn-outline-danger"
                                                 action="{{ route('list.destroy', $dlp->id_DDG) }}" method="POST">
                                                 @csrf @method('DELETE')
                                                 <button class="btn btn-outline-danger" style="border: none;cursor: pointer;"
                                                     type='submit'>
                                                     <i class='bx bx-trash'></i>
                                                 </button>
-                                                {{-- <button class="btn btn-outline-danger" style="border: none;cursor: pointer;"
-                                                    type='submit' onclick="return confirm('Xóa hả')">
-                                                    <i class='bx bx-trash'></i>
-                                                </button> --}}
-                                            </form>
+                                            </form> --}}
                                         </div>
                                     </td>
                                 </tr>
+                                <div class="modal fade " id="staticBackdrop" data-bs-backdrop="static"
+                                    data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Xác nhận thao tác</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Xóa hàng này, tất cả dữ liệu đi kèm sẽ bị xóa ?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <form 
+                                                    action="{{ route('list.destroy', $dlp->id_DDG) }}" method="POST">
+                                                    @csrf @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger"><i
+                                                            class='bx bx-trash'></i></button>
+                                                </form>
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             @endforeach
                         </tbody>
                     </table>
@@ -136,4 +200,8 @@
             </div>
         </div>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
+    </script>
+
 @endsection

@@ -58,15 +58,17 @@ class UserController extends Controller
     {
         $perpage = 5;
         $data_list_point = dotDanhGia::where('id_ND', $this->user->id)->orderby('id_DDG', 'desc')->paginate($perpage)->withQueryString();
-        foreach ($data_list_point as $dtlp) {
-            // $dtlp->id_LDG;
-            $id_LDG= LoaiDanhGia::find($dtlp->id_LDG);
-            //lưu vào session để show ra từng id_LDG theo tung dot
-        }
+        $data_LDG= LoaiDanhGia::all();
+        $nam= nam::all();
+        $danhGias = DanhGia::get();
+        $tieuChis = TieuChi::where('id_CQ', $this->user->id_CQ)->get();
         return view("user.point.list", [
             'title' => 'Danh sách',
             'data_list_point' => $data_list_point,
-            'id_LDG' => $id_LDG,
+            'data_LDG' => $data_LDG,
+            'nam' => $nam,
+            'tieuChis' => $tieuChis,
+            'danhGias' => $danhGias,
         ]);
     }
 
@@ -114,37 +116,14 @@ class UserController extends Controller
                 ->where('id_nam', $nam)
                 ->value('id_LDG');
         } else if ($nam !== null) {
-
             $id_LDG = LoaiDanhGia::where('id_thang', null)
                 ->where('id_quy', null)
                 ->where('id_nam', $nam)
                 ->value('id_LDG');
-
         }
-        // So sánh các id trong table loaidanhgia và lấy id_LDG trùng khớp ra
-        // -------------------->dieukiendacheckOK chỉ lấy tháng và năm k lấy quý
-        // if ($thang !== null && $nam !== null) {
-        //     $id_LDG = LoaiDanhGia::where('id_thang', $thang)->where('id_quy',null)->where('id_nam', $nam)->value('id_LDG');
-        // }
-        // -------------------->dieukiendacheckOK chỉ lấy quý & năm k lấy tháng
-        // if ($quy !== null && $nam !== null) {
-        //     $id_LDG = LoaiDanhGia::where('id_thang', null)
-        //     ->where('id_quy', $quy)
-        //     ->where('id_nam', $nam)
-        //     ->value('id_LDG');
-        // }
-        // -------------------->dieukiendacheckOK chỉ lấy năm
-        // if ($nam !== null) {
-        //     $id_LDG = LoaiDanhGia::where('id_thang', null)
-        //     ->where('id_quy', null)
-        //     ->where('id_nam', $nam)
-        //     ->value('id_LDG');
-        // }
-
         if ($id_LDG === null) {
             return redirect("/list")->with('alert', ['type' => 'danger', 'message' => 'Lỗi mã bị bỏ trống!']);
         }
-
 
         //save dotDanhGia
         $dotDanhGia = new dotDanhGia;

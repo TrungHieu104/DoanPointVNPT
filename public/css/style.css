@@ -95,7 +95,7 @@ body {
 	width: 280px;
 	height: 100%;
 	background: var(--light);
-	z-index: 2000;
+	z-index: 1;
 	transition: .3s ease;
 	overflow-x: hidden;
 	scrollbar-width: none;
@@ -534,7 +534,7 @@ body {
 
 #content main .table-data>div {
 	border-radius: 20px;
-	background: var(--light);
+	background: #ffffff;
 	padding: 24px;
 	overflow-x: auto;
 }
@@ -987,4 +987,51 @@ ul.pagination li.page-item{
 }
 ul.pagination li.disable{
 	background: red;
+}
+
+/* //tooltip */
+/* .custom-tooltip {
+	width: 300px;
+	--bs-tooltip-bg: var(--dark-green);
+	--bs-tooltip-color: var(--bs-white);
+  } */
+  .tooltip {
+	position: relative;
+	display: inline-block;
+	/* border-bottom: 1px dotted black; */
+	opacity: 1;
+}
+
+.tooltip .tooltiptext {
+	visibility: hidden;
+	width: 200px;
+	padding: 10px 15px;
+	background-color: black;
+	color: #fff;
+	text-align: center;
+	border-radius: 6px;
+	/* padding: 5px 0; */
+	position: absolute;
+	z-index: 1;
+	top: -5px;
+	left: 110%;
+	/* Tooltip sẽ hiện lên dần dần, độ mờ tăng dần từ 0 lên 100% trong 2s */
+	/* opacity: 0; */
+	/* transition: opacity 1s; */
+}
+
+.tooltip .tooltiptext::after {
+	content: " ";
+	position: absolute;
+	top: 50%;
+	right: 100%;
+	margin-top: -5px;
+	border-width: 5px;
+	border-style: solid;
+	border-color: transparent black transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+	visibility: visible;
+	opacity: 1;
 }

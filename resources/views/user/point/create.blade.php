@@ -57,7 +57,7 @@
                                             </tr>
                                       
                                             <tr class="row">
-                                                
+                                            
                                                 <td class="col-4 px-4">
                                                     <select name="thang" class="form-select col-6 "
                                                         aria-label="Default select example">
@@ -157,6 +157,8 @@
         // Bắt sự kiện khi radio button được chọn
         radioThang.addEventListener("change", function() {
             if (this.checked) {
+                selectQuy.value = '';
+
                 selectMonth.style.display = 'block';
                 selectQuy.style.display = 'none';
                 selectYear.style.display = 'block';
@@ -165,6 +167,8 @@
 
         radioQuy.addEventListener("change", function() {
             if (this.checked) {
+                selectMonth.value = '';
+
                 selectQuy.style.display = 'block';
                 selectMonth.style.display = 'none';
                 selectYear.style.display = 'block';
@@ -173,6 +177,9 @@
 
         radioNam.addEventListener("change", function() {
             if (this.checked) {
+                selectMonth.value = '';
+                selectQuy.value = '';
+
                 selectYear.style.display = 'block';
                 selectMonth.style.display = 'none';
                 selectQuy.style.display = 'none';
