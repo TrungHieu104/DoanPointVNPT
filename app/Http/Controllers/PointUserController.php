@@ -15,8 +15,7 @@ use App\Models\nam;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-
-class UserController extends Controller
+class PointUserController extends Controller
 {
     protected $user;
     public function __construct()
@@ -36,30 +35,12 @@ class UserController extends Controller
             return $next($request);
         });
     }
-
     function index()
-    {
-        $dataCQ = CoQuan::all();
-        $dataLDG = LoaiDanhGia::all();
-        // $cq = CoQuan::find($this->user->id_CQ);
-        // $dataTC = TieuChi::where('id_LDG', $id_LDG_current->id_LDG)->get();
-        // $dataDG = DB::table('danhgia')
-        //     ->where('id_ND', $this->user->id)
-        //     ->where('id_LDG', $id_LDG_current->id_LDG)
-        //     ->get('diemTuCham');
-        return view("user.home", [
-            'dataCQ' => $dataCQ,
-            // 'dataTC' => $dataTC,
-            // 'dataLDG' => $dataLDG,
-            // 'dataDG' => $dataDG,
-        ]);
-    }
-    function list()
     {
         $perpage = 5;
         $data_list_point = dotDanhGia::where('id_ND', $this->user->id)->orderby('id_DDG', 'desc')->paginate($perpage)->withQueryString();
-        $data_LDG= LoaiDanhGia::all();
-        $nam= nam::all();
+        $data_LDG = LoaiDanhGia::all();
+        $nam = nam::all();
         $danhGias = DanhGia::get();
         $tieuChis = TieuChi::where('id_CQ', $this->user->id_CQ)->get();
         return view("user.point.list", [
@@ -71,7 +52,6 @@ class UserController extends Controller
             'danhGias' => $danhGias,
         ]);
     }
-
     /**
      * Show the form for creating a new resource.
      */
@@ -92,8 +72,6 @@ class UserController extends Controller
             ]);
         }
     }
-
-
     /**
      * Store a newly created resource in storage.
      */

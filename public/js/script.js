@@ -111,12 +111,15 @@ function validateCheckbox() {
 	var warningMsg = document.getElementById("warningMsg");
 
 	if (!checkbox.checked) {
-		warningMsg.style.display = "block";
-	} else {
-		warningMsg.style.display = "none";
-		// Add your logic for when the checkbox is checked here
-	}
+        warningMsg.style.display = "block";
+        // Ngăn việc gửi form nếu checkbox không được kiểm tra
+        event.preventDefault(); // Dòng này dùng để ngăn form được gửi đi
+    } else {
+        warningMsg.style.display = "none";
+        // Cho phép gửi form khi checkbox được kiểm tra
+    }
 }
+
 const inputBox = document.getElementById('inputBox');
 const listContainer = document.getElementById('list-container');
 function addTask(){

@@ -71,24 +71,27 @@
                 </button>
             @endif
             {{-- @endforeach --}}
-
-
-
-
         </div>
-        <div class="table-data">
-            <div class="accordion accordion-flush order" id="accordionFlushExample">
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button fw-bold" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#flush-collapseOne" aria-expanded="true" aria-controls="flush-collapseOne">
-                            1. Thông tin cá nhân
-                        </button>
-                    </h2>
-                    <div id="flush-collapseOne" class="accordion-collapse collapse show"
-                        data-bs-parent="#accordionFlushExample">
-                        <div class="accordion-body">
-                            <form class="row g-3">
+        @if (Session::exists('alert'))
+            <div class="alert alert-{{ session('alert')['type'] }} alert-dismissible fade show" role="alert">
+                <strong>{{ session('alert')['message'] }}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        <form method="post" action="{{ route('profile.update') }}">
+            @csrf @method('PATCH')
+            <div class="table-data">
+                <div class="accordion accordion-flush order" id="accordionFlushExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button fw-bold" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#flush-collapseOne" aria-expanded="true" aria-controls="flush-collapseOne">
+                                1. Thông tin cá nhân
+                            </button>
+                        </h2>
+                        <div id="flush-collapseOne" class="accordion-collapse collapse show"
+                            data-bs-parent="#accordionFlushExample">
+                            <div class="accordion-body row">
                                 <div class="col-md-6">
                                     <label for="inputEmail4" class="form-label">Họ và tên</label>
                                     <input type="text" name="ten" class="form-control" id="inputEmail4"
@@ -106,7 +109,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="inputPassword4" class="form-label">Mã cơ quan</label>
-                                    <select class="form-select" aria-label="Default select example">
+                                    <select name="id_CQ" class="form-select" aria-label="Default select example">
                                         <option selected value="{{ Auth::user()->id_CQ }}">{{ Auth::user()->id_CQ }} -
                                             {{ $cq->ten }}</option>
                                         @foreach ($dataCQ as $dCQ)
@@ -114,88 +117,36 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                    {{-- <input type="text" min="0" max="100" name="id_CQ" class="form-control"
-                                        id="inputPassword4" value="{{ Auth::user()->id_CQ }} - {{ $cq->ten }}"> --}}
                                 </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                            2. Đánh giá tổng quan
-                        </button>
-                    </h2>
-                    {{-- @php
-                        echo var_dump($dataDG);
-                        echo $id_LDG_current;
-                    @endphp --}}
-                    <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                        <div class="accordion-body">
-                            <div class="row g-3">
-                                {{-- @foreach ($dataTC as $dTC)
-                                    <div class="col-md-12">
-                                        <div class="input-group flex-nowrap">
-                                            <span class="input-group-text w-25" id="addon-wrapping">{{ $dTC->ten }} :
-                                            </span>
-                                            @php
-                                                $danhGia = $dataDG->where('id_TC', $dTC->id_TC)->first();
-                                            @endphp
-
-                                            <input type="number" min="0" max="{{ $dTC->diem }}"
-                                                value="{{ $danhGia ? $danhGia->diemTuCham : '' }}" class="form-control"
-                                                placeholder="Nhập điểm tối đa {{ $dTC->diem }} điểm"
-                                                aria-label="Username" aria-describedby="addon-wrapping"
-                                                oninput="if(this.value.length > {{ $dTC->max_length }}) { this.value = this.value.slice(0, {{ $dTC->max_length }}); }">
-
-                                         
-                                            <div class="form-floating">
-                                                <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
-                                                <label for="floatingTextarea2"
-                                                    style="color: var(--bs-accordion-color);">Minh
-                                                    chứng </label>
-                                            </div>
-                                            <div class="form-floating">
-                                                <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
-                                                <label for="floatingTextarea2"
-                                                    style="color: var(--bs-accordion-color);">Ghi
-                                                    chú </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach --}}
                             </div>
                         </div>
                     </div>
                     <div class="accordion-item">
                         <h2 class="accordion-header">
                             <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#flush-collapseThree" aria-expanded="false"
-                                aria-controls="flush-collapseThree">
-                                3. Góp ý & Gửi đánh giá
+                                data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                                2. Xác nhận & Gửi thông tin
                             </button>
                         </h2>
-                        <br>
-                        <div id="flush-collapseThree" class="accordion-collapse collapse "
+                        <div id="flush-collapseTwo" class="accordion-collapse collapse"
                             data-bs-parent="#accordionFlushExample">
-
-                            <div class="form-check py-3 px-5">
-                                <input class="form-check-input checkbox" type="checkbox" id="gridCheck">
-                                <label class="form-check-label text-checkbox" for="gridCheck">
-                                    Tôi đã kiểm tra thông tin & xác nhận thông tin chính xác
-                                </label>
-                                <p id="warningMsg" style="display: none; color: red;">Vui lòng kiểm tra và xác nhận lại
-                                    thông tin</p>
+                            <div class="accordion-body">
+                                <div class="form-check py-3 px-4">
+                                    <input class="form-check-input checkbox" type="checkbox" id="gridCheck">
+                                    <label class="form-check-label text-checkbox" for="gridCheck">
+                                        Tôi đã kiểm tra thông tin & xác nhận thông tin chính xác
+                                    </label>
+                                    <p id="warningMsg" style="display: none; color: red;">Vui lòng kiểm tra và xác nhận lại
+                                        thông tin</p>
+                                </div>
+                                <button onclick="validateCheckbox()" type="submit"
+                                    class="btn btn-outline-success btn-rounded" data-mdb-ripple-color="dark">Cập nhật thông
+                                    tin</button>
                             </div>
-                            <a href="#" class="btn-submit" onclick="validateCheckbox()">
-                                <i class='bx bxs-cloud-download'></i>
-                                <span class="text">Gửi</span>
-                            </a>
                         </div>
                     </div>
                 </div>
             </div>
+        </form>
     </main>
 @endsection

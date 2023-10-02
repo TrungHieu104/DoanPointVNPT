@@ -5,14 +5,14 @@
         <img class="logo_admin" src="/images/logo.png" alt="">
     </a>
     <ul class="side-menu top">
-        <li class="{{ Route::currentRouteName() === '/' ? 'active' : '' }}">
-            <a href="{{ route('/') }}">
+        <li class="{{ Route::currentRouteName() === 'profile.index' ? 'active' : '' }}">
+            <a href="{{ route('profile.index') }}">
                 <i class='bx bxs-dashboard'></i>
                 <span class="text">Thông tin Đoàn viên</span>
             </a>
         </li>
-        <li class="{{ Route::currentRouteName() === 'list' || Route::currentRouteName() === 'list.create' || Route::currentRouteName() === 'list.edit' ? 'active' : '' }}">
-            <a href="{{ route('list') }}">
+        <li class="{{ Route::currentRouteName() === 'list.index' || Route::currentRouteName() === 'list.create' || Route::currentRouteName() === 'list.edit' ? 'active' : '' }}">
+            <a href="{{ route('list.index') }}">
                 <i class='bx bxs-cloud-download'></i>
                 <span class="text">Điểm Đoàn viên</span>
             </a>

@@ -4,7 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProfileUserController;
+use App\Http\Controllers\PointUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,9 +27,19 @@ Route::post('/login',[AuthController::class,'login_'])->name('login.submit');
 Route::get('/logout', [AuthController::class, 'logout']);
 
 Route::group(['middleware' => 'role:0'], function () {
-    Route::get('/',[UserController::class,'index'])->name('/');
-    Route::get('/list',[UserController::class,'list'])->name('list');
-    Route::resource('list', UserController::class)->names([
+    Route::resource('', ProfileUserController::class)->names([
+        'index' => 'profile.index',
+        'create' => 'profile.create',
+        'store' => 'profile.store',
+        'show' => 'profile.show',
+        'edit' => 'profile.edit',
+        'update' => 'profile.update',
+        'destroy' => 'profile.destroy',
+    ]);
+    Route::patch('/profile/update', [ProfileUserController::class, 'updateProfile'])->name('profile.update');
+    
+    
+    Route::resource('list', PointUserController::class)->names([
         'index' => 'list.index',
         'create' => 'list.create',
         'store' => 'list.store',
@@ -36,8 +47,10 @@ Route::group(['middleware' => 'role:0'], function () {
         'edit' => 'list.edit',
         'update' => 'list.update',
         'destroy' => 'list.destroy',
-    ])->except(['index']); 
+    ]); 
 });
+
+
 
 Route::group(['prefix' => 'dashboard','middleware' => 'role:1'], function () {
     Route::get('/', [AdminController::class,'index'])->name('admin');
