@@ -1,6 +1,13 @@
 <nav>
     <i class='bx bx-menu'></i>
-    <a href="#" class="nav-link">Đánh giá Đoàn viên thanh niên - {{$cq->ten}}</a>
+    <a href="#" class="nav-link">
+        @if (Auth::user()->role = 0)
+            
+            Đánh giá Đoàn viên thanh niên - {{$cq->ten}}</a>
+        @else
+            Quản lý Đoàn viên thanh niên - {{$cq->ten}}</a>
+            
+        @endif
     <form action="#">
         <div class="form-input">
             <input type="search" placeholder="Tìm kiếm...">

@@ -20,7 +20,7 @@
 
 <body>
 
-
+    @stack('script-access')
     <!-- SIDEBAR -->
     @include('user.component.sidebar')
     <!-- SIDEBAR -->

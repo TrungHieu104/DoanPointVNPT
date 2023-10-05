@@ -72,12 +72,12 @@
             @endif
             {{-- @endforeach --}}
         </div>
-        @if (Session::exists('alert'))
+        {{-- @if (Session::exists('alert'))
             <div class="alert alert-{{ session('alert')['type'] }} alert-dismissible fade show" role="alert">
                 <strong>{{ session('alert')['message'] }}</strong>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
-        @endif
+        @endif --}}
         <form method="post" action="{{ route('profile.update') }}">
             @csrf @method('PATCH')
             <div class="table-data">
@@ -92,6 +92,9 @@
                         <div id="flush-collapseOne" class="accordion-collapse collapse show"
                             data-bs-parent="#accordionFlushExample">
                             <div class="accordion-body row">
+                                {{-- <div class="input-group col-md-12">
+                                    <input type="file" class="form-control" id="inputGroupFile02">
+                                </div> --}}
                                 <div class="col-md-6">
                                     <label for="inputEmail4" class="form-label">Họ và tên</label>
                                     <input type="text" name="ten" class="form-control" id="inputEmail4"
@@ -140,7 +143,8 @@
                                         thông tin</p>
                                 </div>
                                 <button onclick="validateCheckbox()" type="submit"
-                                    class="btn btn-outline-success btn-rounded" data-mdb-ripple-color="dark">Cập nhật thông
+                                    class="btn btn-outline-success btn-rounded" data-mdb-ripple-color="dark">Cập nhật
+                                    thông
                                     tin</button>
                             </div>
                         </div>
@@ -150,3 +154,22 @@
         </form>
     </main>
 @endsection
+
+@push('script-access')
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script type="text/javascript">
+        // Get the flash message from the session
+        var type = '{{ Session::get('alert.type') }}';
+        var msg = '{{ Session::get('alert.message') }}';
+
+        // Display the sweet alert message if it exists
+        if (msg) {
+            swal({
+                title: msg,
+                // text: msg,
+                icon: type,
+                button: "OK",
+            });
+        }
+    </script>
+@endpush

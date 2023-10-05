@@ -5,15 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\CoQuan;
-use App\Models\TieuChi;
 use App\Models\LoaiDanhGia;
-use App\Models\DanhGia;
-use App\Models\dotDanhGia;
 use App\Models\thang;
 use App\Models\quy;
 use App\Models\nam;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class ProfileUserController extends Controller
 {
@@ -90,16 +88,29 @@ class ProfileUserController extends Controller
 
     public function updateProfile(Request $request)
     {
+        $isSuccess = false;
         $dataCQ = CoQuan::all();
         $user = User::where('id', $this->user->id);
-        $user->update([
-            'ten' => $request->ten,
-            'phone' => $request->phone,
-            'email' => $request->email,
-            'id_CQ' => $request->id_CQ,
-        ]);
-        return redirect("/")->with('alert', ['type' => 'success', 'message' => 'Cập nhật thông tin thành công !']);
+        if($user){
+            $user->update([
+                'ten' => $request->ten,
+                'phone' => $request->phone,
+                'email' => $request->email,
+                'id_CQ' => $request->id_CQ,
+                
+            ]);
+            $isSuccess = true;
+
+        }else $isSuccess = false;
+    
+        if($isSuccess)
+            Session::flash('alert', ['type' => 'success', 'message' => 'Cập nhật thành công !']);
+        else
+            Session::flash('alert', ['type' => 'error', 'message' => 'Cập nhật thất bại !']);
+    
+        return redirect()->back();
     }
+    
 
 
     /**

@@ -1,4 +1,7 @@
 @extends('admin.layout')
+@section('title')
+    Dashboard
+@endsection
 @section('content')
     <main>
         <div class="head-title">

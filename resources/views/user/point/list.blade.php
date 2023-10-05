@@ -89,7 +89,15 @@
                                             </sub>
                                         </div>
                                     </td>
-                                    <td>{{ date('H:i - d/m/Y', strtotime($dlp->date)) }}</td>
+                                    <td>
+                                        @if ($dlp->updated_at == $dlp->created_at)
+                                            {{ date('H:i - d/m/Y', strtotime($dlp->created_at)) }}<br>
+                                        @else
+                                            {{ date('H:i - d/m/Y', strtotime($dlp->created_at)) }}<br>
+                                            <sub> <b>Lần cập nhật gần nhất: </b>
+                                                {{ date('H:i - d/m/Y', strtotime($dlp->updated_at)) }}</sub>
+                                        @endif
+                                    </td>
                                     <td class="pt-4">
                                         @if ($dlp->trangThai == 0)
                                             <span class="alert alert-danger"><i class='bx bx-x'></i> Chưa hoàn thành</span>
@@ -112,8 +120,8 @@
                                                 <a href="{{ route('list.edit', $dlp->id_DDG) }}" style="border:none;"
                                                     class="btn btn-outline-success"><i class='bx bx-edit'></i></a>
                                             </button>
-                                            <button class="btn btn-outline-danger" style="padding: 0 25px"
-                                                type='button' data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                            <button class="btn btn-outline-danger" style="padding: 0 25px" type='button'
+                                                data-bs-toggle="modal" data-bs-target="#staticBackdrop{{ $dlp->id_DDG }}">
                                                 <i class='bx bx-trash'></i>
                                             </button>
                                             {{-- <form class="btn btn-outline-danger"
@@ -127,7 +135,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <div class="modal fade " id="staticBackdrop" data-bs-backdrop="static"
+                                <div class="modal fade " id="staticBackdrop{{ $dlp->id_DDG }}" data-bs-backdrop="static"
                                     data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
                                     aria-hidden="true">
                                     <div class="modal-dialog">
@@ -138,11 +146,10 @@
                                                     aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                Xóa hàng này, tất cả dữ liệu đi kèm sẽ bị xóa ?
+                                                Xóa hàng này, tất cả dữ liệu đi kèm sẽ bị xóa ? {{ $dlp->id_DDG }}
                                             </div>
                                             <div class="modal-footer">
-                                                <form 
-                                                    action="{{ route('list.destroy', $dlp->id_DDG) }}" method="POST">
+                                                <form action="{{ route('list.destroy', $dlp->id_DDG) }}" method="POST">
                                                     @csrf @method('DELETE')
                                                     <button type="submit" class="btn btn-danger"><i
                                                             class='bx bx-trash'></i></button>

@@ -7,6 +7,9 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileUserController;
 use App\Http\Controllers\PointUserController;
 
+use App\Http\Controllers\ManageCQController;
+use App\Http\Controllers\ManageUsersController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -35,7 +38,7 @@ Route::group(['middleware' => 'role:0'], function () {
         'edit' => 'profile.edit',
         'update' => 'profile.update',
         'destroy' => 'profile.destroy',
-    ]);
+    ])->except('update');
     Route::patch('/profile/update', [ProfileUserController::class, 'updateProfile'])->name('profile.update');
     
     
@@ -53,7 +56,25 @@ Route::group(['middleware' => 'role:0'], function () {
 
 
 Route::group(['prefix' => 'dashboard','middleware' => 'role:1'], function () {
-    Route::get('/', [AdminController::class,'index'])->name('admin');
+    Route::get('/', [AdminController::class,'index'])->name('admin.dashboard');
+    Route::resource('manageCQ', ManageCQController::class)->names([
+        'index' => 'manageCQ.index',
+        'create' => 'manageCQ.create',
+        'store' => 'manageCQ.store',
+        'show' => 'manageCQ.show',
+        'edit' => 'manageCQ.edit',
+        'update' => 'manageCQ.update',
+        'destroy' => 'manageCQ.destroy',
+    ]); 
+    Route::resource('manageUsers', ManageUsersController::class)->names([
+        'index' => 'manageUsers.index',
+        'create' => 'manageUsers.create',
+        'store' => 'manageUsers.store',
+        'show' => 'manageUsers.show',
+        'edit' => 'manageUsers.edit',
+        'update' => 'manageUsers.update',
+        'destroy' => 'manageUsers.destroy',
+    ]); 
 });
 
 

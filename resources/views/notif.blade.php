@@ -51,7 +51,7 @@
                     <!-- end Rabbit -->
                     @if (isset($thongbao) && auth()->user()->role == 1)
                         <div class="alert alert-danger">{{ $thongbao }}</div>
-                        <a href="{{ route('admin') }}" class="btn">Go Home</a>
+                        <a href="{{ route('admin.dashboard') }}" class="btn">Go Home</a>
                     @else
                         <div class="alert alert-danger">{{ $thongbao }}</div>
                         <a href="{{ url('/') }}" class="btn">Go Home</a>
