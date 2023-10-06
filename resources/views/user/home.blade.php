@@ -3,14 +3,7 @@
     <main>
         <div class="head-title">
             <div class="left">
-                <h1>Cập nhật & đánh giá thông tin Đoàn viên
-                    {{-- @foreach ($dataLDG as $ldg)
-                        @if ($ldg->thang == $currentMonth && $ldg->quy == $currentQuarter && $ldg->nam == $currentYear)
-                            {{ 'Quý: ' . $ldg->quy }} - {{ $ldg->thang }}/{{ $ldg->nam }}
-                        @endif
-                    @endforeach --}}
-
-                </h1>
+                <h1>Cập nhật & đánh giá thông tin Đoàn viên</h1>
                 <ul class="breadcrumb">
                     <li>
                         <a href="#">Bảng điều khiển</a>

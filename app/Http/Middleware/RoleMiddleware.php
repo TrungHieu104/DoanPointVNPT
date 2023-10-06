@@ -16,20 +16,6 @@ class RoleMiddleware
      */
     public function handle(Request $request, Closure $next, $role): Response
     {
-        // if(auth()->check()){
-        //     if(auth()->user()->role == $role){
-        //         return $next($request);
-        //     }else{
-        //         // if(auth()->user()->role == 1) {
-        //         //     return $next($request);
-        //         // } else {
-        //             return redirect('/notif')->with('thongbao', "Bạn không đủ quyền hạn để truy cập site này");
-        //         // }
-        //     }
-        // }else{
-        //     return redirect('/login');
-        // }
-
         if (Auth::check()) {
             if (Auth::user()->role == $role) {
                 return $next($request);
@@ -39,10 +25,5 @@ class RoleMiddleware
         } else {
             return redirect('/login');
         }
-
-
-        
-
-
     }
 }

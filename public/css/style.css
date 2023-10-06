@@ -427,6 +427,9 @@ body {
 	color: var(--dark-grey);
 	pointer-events: none;
 }
+#content main .head-title .left .breadcrumb li a.pe-auto {
+	pointer-events: auto;
+}
 
 #content main .head-title .left .breadcrumb li a.active {
 	color: var(--green);

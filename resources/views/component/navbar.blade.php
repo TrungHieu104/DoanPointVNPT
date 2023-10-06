@@ -1,7 +1,7 @@
 <nav>
     <i class='bx bx-menu'></i>
     <a href="#" class="nav-link">
-        @if (Auth::user()->role = 0)
+        @if (Auth::user()->role == 0)
             
             Đánh giá Đoàn viên thanh niên - {{$cq->ten}}</a>
         @else
@@ -29,8 +29,8 @@
             alt="">
         <ul class="profile-link">
             <li><a href="#"><i class='bx bxs-user-circle icon'></i> Hồ sơ</a></li>
-            <li><a href="#"><i class='bx bxs-cog'></i> Cài đặt</a></li>
-            <li><a href="#"><i class='bx bxs-log-out-circle'></i> Đăng xuất</a></li>
+            <li><a href="{{ route('changePassword') }}"><i class='bx bxs-cog'></i> Đổi mật khẩu</a></li>
+            <li><a href="#"><i class='bx bx-question-mark'></i> Quên mật khẩu</a></li>
         </ul>
     </div>
 </nav>

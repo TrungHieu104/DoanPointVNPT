@@ -10,7 +10,11 @@
                     </li>
                     <li><i class='bx bx-chevron-right'></i></li>
                     <li>
-                        <a class="" href="#">{{ $title }}</a>
+                        <a class="pe-auto" href="{{route('list.index')}}">Điểm Đoàn viên</a>
+                    </li>
+                    <li><i class='bx bx-chevron-right'></i></li>
+                    <li>
+                        <a class="" href="#">Sửa đợt</a>
                     </li>
 
                 </ul>
@@ -51,7 +55,7 @@
                                                             @if ($danhGia->id_TC == $tieuChi->id_TC)
                                                                 <input value="{{ $danhGia->diem }}"
                                                                     name="diem[{{ $tieuChi->id_TC }}]" type="number"
-                                                                    min="0" max="100" class="form-control"
+                                                                    min="0" max="{{ $tieuChi->diemQuyDinh }}" class="form-control"
                                                                     placeholder="Nhập điểm tối đa {{ $tieuChi->diemQuyDinh }} điểm">
                                                                 <input value="{{ $danhGia->link }}"
                                                                     name="link[{{ $tieuChi->id_TC }}]" type="text"

@@ -13,7 +13,7 @@
                     </li>
                     <li><i class='bx bx-chevron-right'></i></li>
                     <li>
-                        <a class="" href="#">{{ $title }}</a>
+                        <a class="" href="#">Điểm Đoàn viên</a>
                     </li>
 
                 </ul>

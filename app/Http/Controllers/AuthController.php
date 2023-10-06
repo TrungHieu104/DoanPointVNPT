@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\changePwRequest;
 
-// use Illuminate\Support\Facades\Auth;
 
 
 class AuthController extends Controller
@@ -41,4 +43,44 @@ class AuthController extends Controller
         auth()->guard('web')->logout();
         return redirect('/login')->with('thongbao', 'Đăng xuất thành công');
     }
+
+    public function changePassword()
+    {
+        return view('changePassword');
+    }
+    public function changePassword_(changePwRequest $request)
+    {
+        $isSuccess = false;
+
+        // Data get from request form
+        $old_password = $request['password'];
+        $new_password = $request['newpassword'];
+
+        // Check user logged in
+        $user_logined = Auth::user();
+
+        $user = User::find($user_logined->id);
+
+        if (Hash::check($old_password, $user->password)) {
+            $user->update([
+                'password' => Hash::make($new_password),
+            ]);
+            $isSuccess = true;
+        } else {
+            $isSuccess = false;
+        }
+
+        if ($isSuccess) {
+            Session::flash('alert', ['type' => 'success', 'message' => 'Đổi mật khẩu thành công !']);
+        } else {
+            Session::flash('alert', ['type' => 'error', 'message' => 'Đổi mật khẩu thất bại !']);
+        }
+
+        if (Auth::user()->role == 1) {
+            return redirect('/dashboard');
+        } else {
+            return redirect('/');
+        }
+    }
+
 }

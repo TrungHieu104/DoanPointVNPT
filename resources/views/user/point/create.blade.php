@@ -10,7 +10,11 @@
                     </li>
                     <li><i class='bx bx-chevron-right'></i></li>
                     <li>
-                        <a class="" href="#">{{ $title }}</a>
+                        <a class="pe-auto" href="{{route('list.index')}}">Điểm Đoàn viên</a>
+                    </li>
+                    <li><i class='bx bx-chevron-right'></i></li>
+                    <li>
+                        <a class="" href="#">Thêm mới</a>
                     </li>
 
                 </ul>
@@ -97,7 +101,7 @@
                                                     <div class="input-group mb-3">
                                                         <input name="tenDot" type="text" class="form-control"
                                                             placeholder="Nhập tên đợt đánh giá" value="text">
-                                                        <button class="btn btn-outline-secondary dropdown-toggle"
+                                                        {{-- <button class="btn btn-outline-secondary dropdown-toggle"
                                                             type="button" data-bs-toggle="dropdown"
                                                             aria-expanded="false">Lựa chọn các tên đợt có sẵn</button>
                                                         <ul class="dropdown-menu dropdown-menu-end">
@@ -111,7 +115,7 @@
                                                             </li>
                                                             <li><a class="dropdown-item" href="#">Separated link</a>
                                                             </li>
-                                                        </ul>
+                                                        </ul> --}}
                                                     </div>
                                                 </td>
                                             </tr>
@@ -123,8 +127,8 @@
                                                 <tr>
                                                     <td>
                                                         <input name="diem[{{ $tieuChi->id_TC }}]" type="number"
-                                                            min="0" max="100" class="form-control"
-                                                            placeholder="Nhập điểm tối đa {{ $tieuChi->diemQuyDinh }} điểm" value="2">
+                                                            min="0" max="{{ $tieuChi->diemQuyDinh }}" class="form-control"
+                                                            placeholder="Nhập điểm tối đa {{ $tieuChi->diemQuyDinh }} điểm" value="">
                                                         <input name="link[{{ $tieuChi->id_TC }}]" type="text"
                                                             class="form-control" placeholder="Nhập link">
                                                         <input name="ghiChu[{{ $tieuChi->id_TC }}]" type="text"

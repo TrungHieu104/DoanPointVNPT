@@ -54,6 +54,10 @@ Route::group(['middleware' => 'role:0'], function () {
 });
 
 
+Route::get('/change-password', [AuthController::class, 'changePassword'])->name('changePassword');
+Route::post('/change-password', [AuthController::class, 'changePassword_'])->name('changePassword.submit');
+
+
 
 Route::group(['prefix' => 'dashboard','middleware' => 'role:1'], function () {
     Route::get('/', [AdminController::class,'index'])->name('admin.dashboard');

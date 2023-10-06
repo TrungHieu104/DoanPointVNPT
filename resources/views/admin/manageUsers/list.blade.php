@@ -16,19 +16,13 @@
                     </li>
                     <li><i class='bx bx-chevron-right'></i></li>
                     <li>
-                        <a class="" href="#">{{ $title }}</a>
+                        <a class="" href="#">Quản lý Đoàn viên</a>
                     </li>
 
                 </ul>
             </div>
         </div>
-        {{-- @if (Session::exists('alert'))
-            <div class="alert alert-{{ session('alert')['type'] }} alert-dismissible fade show" role="alert">
-                <strong>{{ session('alert')['message'] }}</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif --}}
-        <a href="{{ url('/manageUsers/create') }}">
+        <a href="{{ route('manageUsers.create') }}">
             <button type="button" class="btn btn-success">
                 Thêm mới<span class="badge"><i class='bx bx-plus'></i></span>
             </button>
@@ -65,18 +59,7 @@
                                         @else
                                             Quản trị viên
                                         @endif
-
-                                        {{-- @foreach ($data_list_parent_cq as $dl_pcq)
-                                            @if ($dl_users->parent_CQ == $dl_pcq->id_CQ)
-                                                {{$dl_pcq->ten}}
-                                            @else
-                                                
-                                            @endif
-                                        @endforeach --}}
                                     </td>
-                                    {{-- <td>
-                                        {{ $dl_users->parent_CQ }}
-                                    </td> --}}
                                     <td class="text-center">
                                         <div class="btn-group">
                                             <button class="btn btn-outline-success">

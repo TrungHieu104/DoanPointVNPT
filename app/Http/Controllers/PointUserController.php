@@ -26,12 +26,7 @@ class PointUserController extends Controller
             $thang = thang::all();
             $quy = quy::all();
             $nam = nam::all();
-            view()->share([
-                'cq' => $cq,
-                'thang' => $thang,
-                'quy' => $quy,
-                'nam' => $nam,
-            ]);
+            view()->share(compact('cq', 'thang', 'quy', 'nam'));
             return $next($request);
         });
     }
@@ -43,14 +38,10 @@ class PointUserController extends Controller
         $nam = nam::all();
         $danhGias = DanhGia::get();
         $tieuChis = TieuChi::where('id_CQ', $this->user->id_CQ)->get();
-        return view("user.point.list", [
-            'title' => 'Danh sách',
-            'data_list_point' => $data_list_point,
-            'data_LDG' => $data_LDG,
-            'nam' => $nam,
-            'tieuChis' => $tieuChis,
-            'danhGias' => $danhGias,
-        ]);
+        return view(
+            "user.point.list",
+            compact('data_list_point', 'data_LDG', 'data_LDG', 'nam', 'tieuChis', 'danhGias')
+        );
     }
     /**
      * Show the form for creating a new resource.
@@ -61,15 +52,9 @@ class PointUserController extends Controller
         $tieuChis = TieuChi::where('id_CQ', $this->user->id_CQ)->get();
         if ($tieuChis->count() == 0) {
             session()->flash('message', 'Hiện chưa cập nhật tiêu chí tại cơ quan' . $this->user->ten_CQ);
-            return view("user.point.create", [
-                'title' => 'Tạo đợt ',
-                'tieuChis' => $tieuChis,
-            ]);
+            return view("user.point.create", compact('tieuChis'));
         } else {
-            return view("user.point.create", [
-                'title' => 'Tạo đợt ',
-                'tieuChis' => $tieuChis,
-            ]);
+            return view("user.point.create", compact('tieuChis'));
         }
     }
     /**
@@ -114,13 +99,15 @@ class PointUserController extends Controller
         //save danhGia
         $tieuChis = TieuChi::where('id_CQ', $this->user->id_CQ)->get();
         foreach ($tieuChis as $tieuChi) {
-            $danhGia = new DanhGia;
-            $danhGia->id_TC = $tieuChi->id_TC;
-            $danhGia->diem = $request['diem'][$tieuChi->id_TC];
-            $danhGia->link = $request['link'][$tieuChi->id_TC];
-            $danhGia->ghiChu = $request['ghiChu'][$tieuChi->id_TC];
-            $danhGia->id_DDG = $dotDanhGia->id_DDG;
-            $danhGia->save();
+            if($request['diem'][$tieuChi->id_TC] !== null){
+                $danhGia = new DanhGia;
+                $danhGia->id_TC = $tieuChi->id_TC;
+                $danhGia->diem = $request['diem'][$tieuChi->id_TC];
+                $danhGia->link = $request['link'][$tieuChi->id_TC];
+                $danhGia->ghiChu = $request['ghiChu'][$tieuChi->id_TC];
+                $danhGia->id_DDG = $dotDanhGia->id_DDG;
+                $danhGia->save();
+            }
         }
         return redirect("/list")->with('alert', ['type' => 'success', 'message' => 'Thêm thông tin thành công !']);
     }
@@ -142,12 +129,7 @@ class PointUserController extends Controller
         $dotDG = dotDanhGia::where('id_DDG', $id)->first();
         $tieuChis = TieuChi::where('id_CQ', $this->user->id_CQ)->get();
 
-        return view("user.point.edit", [
-            'title' => 'Sửa đợt ',
-            'tieuChis' => $tieuChis,
-            'dotDG' => $dotDG,
-            'danhGias' => $danhGias
-        ]);
+        return view("user.point.edit", compact('tieuChis','dotDG','danhGias'));
     }
 
     /**

@@ -21,15 +21,7 @@ class ProfileUserController extends Controller
         $this->middleware(function ($request, $next) {
             $this->user = Auth::user();
             $cq = CoQuan::find($this->user->id_CQ);
-            $thang = thang::all();
-            $quy = quy::all();
-            $nam = nam::all();
-            view()->share([
-                'cq' => $cq,
-                'thang' => $thang,
-                'quy' => $quy,
-                'nam' => $nam,
-            ]);
+            view()->share(compact('cq'));
             return $next($request);
         });
     }
@@ -41,9 +33,7 @@ class ProfileUserController extends Controller
         //
         $dataCQ = CoQuan::all();
         $dataLDG = LoaiDanhGia::all();
-        return view("user.home", [
-            'dataCQ' => $dataCQ,
-        ]);
+        return view("user.home", compact('dataCQ'));
     }
 
     /**
@@ -91,26 +81,27 @@ class ProfileUserController extends Controller
         $isSuccess = false;
         $dataCQ = CoQuan::all();
         $user = User::where('id', $this->user->id);
-        if($user){
+        if ($user) {
             $user->update([
                 'ten' => $request->ten,
                 'phone' => $request->phone,
                 'email' => $request->email,
                 'id_CQ' => $request->id_CQ,
-                
             ]);
             $isSuccess = true;
 
-        }else $isSuccess = false;
-    
-        if($isSuccess)
+        } else
+            $isSuccess = false;
+
+        if ($isSuccess)
             Session::flash('alert', ['type' => 'success', 'message' => 'Cập nhật thành công !']);
         else
             Session::flash('alert', ['type' => 'error', 'message' => 'Cập nhật thất bại !']);
-    
+
         return redirect()->back();
     }
     
+
 
 
     /**

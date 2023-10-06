@@ -127,3 +127,21 @@
         </div>
     </main>
 @endsection
+@push('script-access')
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script type="text/javascript">
+        // Get the flash message from the session
+        var type = '{{ Session::get('alert.type') }}';
+        var msg = '{{ Session::get('alert.message') }}';
+
+        // Display the sweet alert message if it exists
+        if (msg) {
+            swal({
+                title: msg,
+                // text: msg,
+                icon: type,
+                button: "OK",
+            });
+        }
+    </script>
+@endpush
