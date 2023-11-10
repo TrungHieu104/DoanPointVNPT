@@ -22,7 +22,7 @@
 
 
             {{-- @foreach ($dataDG as $dDG) --}}
-            @if (Auth::user()->id)
+            {{-- @if (Auth::user()->id)
                 @if (Auth::user()->trangThai == 0)
                     <button type="button" class="btn btn-outline-danger" disabled>
                         <i class="fa-solid fa-x"></i>
@@ -62,15 +62,10 @@
                     <i class="fa-solid fa-x"></i>
                     Chưa hoàn thành
                 </button>
-            @endif
+            @endif --}}
             {{-- @endforeach --}}
         </div>
-        {{-- @if (Session::exists('alert'))
-            <div class="alert alert-{{ session('alert')['type'] }} alert-dismissible fade show" role="alert">
-                <strong>{{ session('alert')['message'] }}</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif --}}
+        
         <form method="post" action="{{ route('profile.update') }}">
             @csrf @method('PATCH')
             <div class="table-data">
@@ -85,9 +80,6 @@
                         <div id="flush-collapseOne" class="accordion-collapse collapse show"
                             data-bs-parent="#accordionFlushExample">
                             <div class="accordion-body row">
-                                {{-- <div class="input-group col-md-12">
-                                    <input type="file" class="form-control" id="inputGroupFile02">
-                                </div> --}}
                                 <div class="col-md-6">
                                     <label for="inputEmail4" class="form-label">Họ và tên</label>
                                     <input type="text" name="ten" class="form-control" id="inputEmail4"
@@ -105,6 +97,11 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="inputPassword4" class="form-label">Mã cơ quan</label>
+                                    <input type="hidden" name="id_CQ" class="form-control" value="{{ Auth::user()->id_CQ}}">
+                                    <input class="form-control" disabled value="{{ Auth::user()->id_CQ .' - ' .  $cq->ten}}">
+                                </div>
+                                {{-- <div class="col-md-6">
+                                    <label for="inputPassword4" class="form-label">Mã cơ quan</label>
                                     <select name="id_CQ" class="form-select" aria-label="Default select example">
                                         <option selected value="{{ Auth::user()->id_CQ }}">{{ Auth::user()->id_CQ }} -
                                             {{ $cq->ten }}</option>
@@ -113,7 +110,7 @@
                                             </option>
                                         @endforeach
                                     </select>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
@@ -148,7 +145,7 @@
     </main>
 @endsection
 
-@push('script-access')
+{{-- @push('script-access')
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script type="text/javascript">
         // Get the flash message from the session
@@ -165,4 +162,4 @@
             });
         }
     </script>
-@endpush
+@endpush --}}

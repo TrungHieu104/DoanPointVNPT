@@ -14,10 +14,12 @@ use App\Models\quy;
 use App\Models\nam;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Carbon;
 
 class PointUserController extends Controller
 {
     protected $user;
+    protected $perpage = 5;
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
@@ -30,17 +32,18 @@ class PointUserController extends Controller
             return $next($request);
         });
     }
-    function index()
+    function index($dotDG = null)
     {
-        $perpage = 5;
-        $data_list_point = dotDanhGia::where('id_ND', $this->user->id)->orderby('id_DDG', 'desc')->paginate($perpage)->withQueryString();
+        $dotDG != null 
+        ? $data_list_point = $dotDG 
+        : $data_list_point = dotDanhGia::where('id_ND', $this->user->id)->orderby('id_DDG', 'desc')->paginate($this->perpage)->withQueryString();
         $data_LDG = LoaiDanhGia::all();
-        $nam = nam::all();
+        // $nam = nam::all();
         $danhGias = DanhGia::get();
         $tieuChis = TieuChi::where('id_CQ', $this->user->id_CQ)->get();
         return view(
             "user.point.list",
-            compact('data_list_point', 'data_LDG', 'data_LDG', 'nam', 'tieuChis', 'danhGias')
+            compact('data_list_point', 'data_LDG', 'data_LDG', 'tieuChis', 'danhGias')
         );
     }
     /**
@@ -95,16 +98,20 @@ class PointUserController extends Controller
         $dotDanhGia->id_ND = $this->user->id;
         $dotDanhGia->id_LDG = $id_LDG;
         $dotDanhGia->trangThai = 1;
+        $dotDanhGia->date = Carbon::now();
         $dotDanhGia->save();
         //save danhGia
         $tieuChis = TieuChi::where('id_CQ', $this->user->id_CQ)->get();
         foreach ($tieuChis as $tieuChi) {
             if($request['diem'][$tieuChi->id_TC] !== null){
                 $danhGia = new DanhGia;
-                $danhGia->id_TC = $tieuChi->id_TC;
+                $danhGia->ten_tieu_chi = $tieuChi->ten;
                 $danhGia->diem = $request['diem'][$tieuChi->id_TC];
+                $danhGia->diemQuyDinh = $tieuChi->diemQuyDinh;
                 $danhGia->link = $request['link'][$tieuChi->id_TC];
                 $danhGia->ghiChu = $request['ghiChu'][$tieuChi->id_TC];
+                $danhGia->date = Carbon::now();
+                $danhGia->id_TC = $tieuChi->id_TC ?? '';
                 $danhGia->id_DDG = $dotDanhGia->id_DDG;
                 $danhGia->save();
             }
@@ -150,9 +157,12 @@ class PointUserController extends Controller
         // Cập nhật thông tin điểm đánh giá
         foreach ($tieuChis as $tieuChi) {
             $danhGia = DanhGia::firstOrNew(['id_DDG' => $id, 'id_TC' => $tieuChi->id_TC]);
+            $danhGia->ten_tieu_chi = $tieuChi->ten;
             $danhGia->diem = $request->diem[$tieuChi->id_TC];
+            $danhGia->diemQuyDinh = $tieuChi->diemQuyDinh;
             $danhGia->link = $request->link[$tieuChi->id_TC];
             $danhGia->ghiChu = $request->ghiChu[$tieuChi->id_TC];
+            $danhGia->date = Carbon::now();
             $danhGia->save();
         }
         return redirect("/list")->with('alert', ['type' => 'success', 'message' => 'Cập nhật thông tin thành công !']);
@@ -177,6 +187,33 @@ class PointUserController extends Controller
 
         return redirect('/list')->with('alert', ['type' => 'success', 'message' => 'Xóa thông tin thành công !']);
     }
-
+    public function sort(Request $request){
+        $id_LDG = null;
+        $thang = $request['thang'];
+        $quy = $request['quy'];
+        $nam = $request['nam'];
+        if ($thang !== null && $nam !== null) {
+            $id_LDG = LoaiDanhGia::where('id_thang', $thang)
+                ->where('id_quy', null)
+                ->where('id_nam', $nam)
+                ->value('id_LDG');
+        } else if ($quy !== null && $nam !== null) {
+            $id_LDG = LoaiDanhGia::where('id_thang', null)
+                ->where('id_quy', $quy)
+                ->where('id_nam', $nam)
+                ->value('id_LDG');
+        } else if ($nam !== null) {
+            $id_LDG = LoaiDanhGia::where('id_thang', null)
+                ->where('id_quy', null)
+                ->where('id_nam', $nam)
+                ->value('id_LDG');
+        }
+        if ($id_LDG === null) {
+            return redirect('/list')->with('alert', ['type' => 'warning', 'message' => 'Lỗi mã bị bỏ trống!']);
+        }
+        $dotDG = dotDanhGia::where('id_ND', $this->user->id)->where('id_LDG', $id_LDG)->orderby('id_DDG', 'desc')->paginate($this->perpage)->withQueryString();
+        return $this->index($dotDG);
+        // dd($dotDG);
+    }
 
 }

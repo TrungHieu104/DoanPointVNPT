@@ -9,7 +9,9 @@ use App\Http\Controllers\PointUserController;
 
 use App\Http\Controllers\ManageCQController;
 use App\Http\Controllers\ManageUsersController;
-
+use App\Http\Controllers\ManageTcController;
+use App\Http\Controllers\ManageDanhGiaController;
+use App\Http\Controllers\ThongKeController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,6 +30,15 @@ Route::get('/notif',[Controller::class,'notif']);
 Route::get('/login',[AuthController::class,'login'])->name('login');
 Route::post('/login',[AuthController::class,'login_'])->name('login.submit');
 Route::get('/logout', [AuthController::class, 'logout']);
+Route::get('/forgot-password', [AuthController::class, 'forgotPassword'])->name('forgot_password');
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword_'])->name('forgot_password.submit');
+Route::get('/send-OTP', [AuthController::class, 'sendOTP']);
+Route::get('/verified-OTP', [AuthController::class, 'verifiedOTP'])->name('verifiedOTP');
+Route::post('/verified-OTP', [AuthController::class, 'verifiedOTP_'])->name('verifiedOTP_');
+Route::post('/resend-OTP', [AuthController::class, 'resendOTP'])->name('resendOTP');
+
+Route::get('/register',[AuthController::class,'register'])->name('register');
+Route::post('/register',[AuthController::class,'register_'])->name('register.submit');
 
 Route::group(['middleware' => 'role:0'], function () {
     Route::resource('', ProfileUserController::class)->names([
@@ -51,6 +62,11 @@ Route::group(['middleware' => 'role:0'], function () {
         'update' => 'list.update',
         'destroy' => 'list.destroy',
     ]); 
+    Route::group(['prefix' => 'list'], function () {
+        Route::post('sort',[PointUserController::class,'sort'])->name('list.sort');
+
+    });
+
 });
 
 
@@ -69,7 +85,7 @@ Route::group(['prefix' => 'dashboard','middleware' => 'role:1'], function () {
         'edit' => 'manageCQ.edit',
         'update' => 'manageCQ.update',
         'destroy' => 'manageCQ.destroy',
-    ]); 
+    ])->middleware('check_CQ'); 
     Route::resource('manageUsers', ManageUsersController::class)->names([
         'index' => 'manageUsers.index',
         'create' => 'manageUsers.create',
@@ -79,34 +95,16 @@ Route::group(['prefix' => 'dashboard','middleware' => 'role:1'], function () {
         'update' => 'manageUsers.update',
         'destroy' => 'manageUsers.destroy',
     ]); 
+    Route::resource('manageTieuChi', ManageTcController::class);
+    Route::resource('manageDanhGia', ManageDanhGiaController::class);
+    Route::get('/change_status/{id}', [ManageDanhGiaController::class, 'confirmDanhGia']);
+    Route::post('/returnDanhGia/{id}', [ManageDanhGiaController::class, 'returnDanhGia']);
+
+    Route::get('sortCQ',  [ThongKeController::class, 'sortCQ'])->name('sortCQ');
+    
+    // Route::patch('/manageDanhGia/confirmDanhGia/{$id}', [ManageDanhGiaController::class,'confirmDanhGia'])->name('confirmDanhGia');
 });
 
-
-// 30;
-// Route::get('/m', function(){
-//     for ($i = 1; $i <= 12; $i++) {
-        
-//         DB::table('loaidanhgia')->insert([
-//             'id_thang' => $i,
-//             'id_nam' => 12,
-//         ]);
-//     }
-// });
-// Route::get('/q', function(){
-//     for ($i = 1; $i <= 4; $i++) {
-        
-//         DB::table('loaidanhgia')->insert([
-//             'id_quy' => $i,
-//             'id_nam' => 12,
-//         ]);
-//     }
-// });
-// Route::get('/y', function(){
-//         DB::table('loaidanhgia')->insert([
-//             'id_nam' => 12,
-//         ]);
-
-// });
 
 
 

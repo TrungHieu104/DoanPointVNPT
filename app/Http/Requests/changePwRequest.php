@@ -23,14 +23,14 @@ class changePwRequest extends FormRequest
     {
         return [
             //
-            'password' => 'required',
+            // 'password' => 'required',
             'newpassword' => 'required|min:6',
             're_newpassword' => 'required|min:6|same:newpassword',
         ];
     }
     public function messages() {
         return [
-         'password.required' => 'Không được bỏ trống',
+        //  'password.required' => 'Không được bỏ trống',
         //  'password.min' => 'Nhập ít nhất 6 ký tự',
          'newpassword.required' => 'Bạn chưa nhập mật khẩu',
          'newpassword.min' => 'Mật khẩu từ 6 ký tự trở lên',
@@ -38,5 +38,5 @@ class changePwRequest extends FormRequest
          're_newpassword.min' => 'Mật khẩu nhập lại cùng từ 6 ký tự trở lên',
          're_newpassword.same' => 'Mật khẩu nhập lại không khớp',
        ];
-     }
+    }
 }

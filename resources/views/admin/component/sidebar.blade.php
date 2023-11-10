@@ -11,20 +11,37 @@
                 <span class="text">Bảng điều khiển</span>
             </a>
         </li>
-        {{-- <li class="{{ Route::currentRouteName() === 'manageCQ.index' ? 'active' : '' }}">
-            <a href="{{ route('manageCQ.index') }}">
-                <i class='bx bxs-doughnut-chart'></i>
-                <span class="text">Quản lý cơ quan</span>
+        @php
+            $check_parent_CQ = DB::table('coquan')->where('id_CQ','=', Auth::user()->id_CQ)->value('parent_CQ');
+        @endphp
+        @if ($check_parent_CQ == 0)
+            <li class="{{ Route::currentRouteName() === 'manageCQ.index' 
+            || Route::currentRouteName() === 'manageCQ.create' 
+            || Route::currentRouteName() === 'manageCQ.edit' ? 'active' : '' }}">
+                <a href="{{ route('manageCQ.index') }}">
+                    <i class='bx bxs-doughnut-chart'></i>
+                    <span class="text">Quản lý cơ quan</span>
+                </a>
+            </li>
+        @endif
+        <li class="{{ Route::currentRouteName() === 'manageDanhGia.index' ? 'active' : '' }}">
+            <a href="{{ route('manageDanhGia.index') }}">
+                <i class='bx bxs-message-dots'></i>
+                <span class="text">Quản lý Đánh giá</span>
             </a>
-        </li> --}}
-        <li class="{{ Route::currentRouteName() === 'manageUsers.index' || Route::currentRouteName() === 'manageUsers.create' || Route::currentRouteName() === 'manageUsers.edit' ? 'active' : '' }}">
+        </li>
+        <li class="{{ Route::currentRouteName() === 'manageUsers.index' 
+        || Route::currentRouteName() === 'manageUsers.create' 
+        || Route::currentRouteName() === 'manageUsers.edit' ? 'active' : '' }}">
             <a href="{{ route('manageUsers.index') }}">
                 <i class='bx bxs-group'></i>
                 <span class="text">Quản lý Đoàn viên</span>
             </a>
         </li>
-        <li class="{{ Route::currentRouteName() === 'manageTieuChi.index' ? 'active' : '' }}">
-            <a href="">
+        <li class="{{ Route::currentRouteName() === 'manageTieuChi.index' 
+        || Route::currentRouteName() === 'manageTieuChi.create' 
+        || Route::currentRouteName() === 'manageTieuChi.edit' ? 'active' : '' }}">
+            <a href="{{ route('manageTieuChi.index') }}">
                 <i class='bx bx-list-plus'></i>
                 <span class="text">Quản lý tiêu chí đánh giá</span>
             </a>
@@ -35,12 +52,7 @@
                 <span class="text">Ghi chú</span>
             </a>
         </li>
-        <li>
-            <a href="#">
-                <i class='bx bxs-message-dots'></i>
-                <span class="text">Phản hồi</span>
-            </a>
-        </li>
+        
     </ul>
     <ul class="side-menu">
         <li>

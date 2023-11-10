@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
-        Schema::table('danhgia', function (Blueprint $table) {
+        Schema::create('email_verification', function (Blueprint $table) {
+            $table->id();
+            $table->string('email',255);
+            $table->string('OTP',7);
             $table->timestamps();
         });
     }
@@ -22,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('xac_thuc_email');
     }
 };

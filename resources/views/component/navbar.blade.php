@@ -30,7 +30,7 @@
         <ul class="profile-link">
             <li><a href="#"><i class='bx bxs-user-circle icon'></i> Hồ sơ</a></li>
             <li><a href="{{ route('changePassword') }}"><i class='bx bxs-cog'></i> Đổi mật khẩu</a></li>
-            <li><a href="#"><i class='bx bx-question-mark'></i> Quên mật khẩu</a></li>
+            {{-- <li><a href="#"><i class='bx bx-question-mark'></i> Quên mật khẩu</a></li> --}}
         </ul>
     </div>
 </nav>

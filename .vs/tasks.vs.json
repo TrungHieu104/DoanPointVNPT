@@ -1,0 +1,15 @@
+{
+  "version": "0.2.1",
+  "tasks": [
+    {
+      "taskLabel": "task-DoanPointVNPT",
+      "appliesTo": "/",
+      "type": "launch"
+    },
+    {
+      "taskLabel": "task-DoanPointVNPT",
+      "appliesTo": "/",
+      "type": "launch"
+    }
+  ]
+}

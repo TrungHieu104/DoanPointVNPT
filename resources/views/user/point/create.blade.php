@@ -14,7 +14,7 @@
                     </li>
                     <li><i class='bx bx-chevron-right'></i></li>
                     <li>
-                        <a class="" href="#">Thêm mới</a>
+                        <a class="active" href="#">Thêm mới</a>
                     </li>
 
                 </ul>
@@ -101,21 +101,6 @@
                                                     <div class="input-group mb-3">
                                                         <input name="tenDot" type="text" class="form-control"
                                                             placeholder="Nhập tên đợt đánh giá" value="text">
-                                                        {{-- <button class="btn btn-outline-secondary dropdown-toggle"
-                                                            type="button" data-bs-toggle="dropdown"
-                                                            aria-expanded="false">Lựa chọn các tên đợt có sẵn</button>
-                                                        <ul class="dropdown-menu dropdown-menu-end">
-                                                            <li><a class="dropdown-item" href="#">Action</a></li>
-                                                            <li><a class="dropdown-item" href="#">Another action</a>
-                                                            </li>
-                                                            <li><a class="dropdown-item" href="#">Something else
-                                                                    here</a></li>
-                                                            <li>
-                                                                <hr class="dropdown-divider">
-                                                            </li>
-                                                            <li><a class="dropdown-item" href="#">Separated link</a>
-                                                            </li>
-                                                        </ul> --}}
                                                     </div>
                                                 </td>
                                             </tr>

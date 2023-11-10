@@ -14,7 +14,7 @@
                     </li>
                     <li><i class='bx bx-chevron-right'></i></li>
                     <li>
-                        <a class="" href="#">Sửa đợt</a>
+                        <a class="active" href="#">Sửa đợt</a>
                     </li>
 
                 </ul>

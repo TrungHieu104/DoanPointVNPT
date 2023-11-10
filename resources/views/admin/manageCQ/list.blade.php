@@ -6,9 +6,7 @@
     <main>
         <div class="head-title">
             <div class="left">
-                <h1>Danh sách cơ quan Đoàn
-
-                </h1>
+                <h1>Danh sách cơ quan Đoàn trực thuộc</h1>
 
                 <ul class="breadcrumb">
                     <li>
@@ -16,7 +14,7 @@
                     </li>
                     <li><i class='bx bx-chevron-right'></i></li>
                     <li>
-                        <a class="" href="#">{{ $title }}</a>
+                        <a class="pe-auto active" href="{{ route('manageCQ.index') }}">Quản lý Cơ quan</a>
                     </li>
 
                 </ul>
@@ -28,7 +26,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
-        <a href="{{ url('/list/create') }}">
+        <a href="{{ route('manageCQ.create') }}">
             <button type="button" class="btn btn-success">
                 Thêm mới<span class="badge"><i class='bx bx-plus'></i></span>
             </button>
@@ -70,9 +68,6 @@
                                             @endif
                                         @endforeach
                                     </td>
-                                    {{-- <td>
-                                        {{ $dlcq->parent_CQ }}
-                                    </td> --}}
                                     <td class="text-center">
                                         <div class="btn-group">
                                             <button class="btn btn-outline-success">
@@ -81,13 +76,13 @@
                                                     class="btn btn-outline-success"><i class='bx bx-edit'></i></a>
                                             </button>
                                             <button class="btn btn-outline-danger" style="padding: 0 25px"
-                                                type='button' data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                                type='button' data-bs-toggle="modal" data-bs-target="#staticBackdrop{{ $dlcq->id_CQ }}">
                                                 <i class='bx bx-trash'></i>
                                             </button>
                                         </div>
                                     </td>
                                 </tr>
-                                <div class="modal fade " id="staticBackdrop" data-bs-backdrop="static"
+                                <div class="modal fade " id="staticBackdrop{{ $dlcq->id_CQ }}" data-bs-backdrop="static"
                                     data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
                                     aria-hidden="true">
                                     <div class="modal-dialog">
@@ -98,7 +93,7 @@
                                                     aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
-                                                Xóa hàng này, tất cả dữ liệu đi kèm sẽ bị xóa ?
+                                                Xóa hàng này, tất cả dữ liệu đi kèm sẽ bị xóa ? {{ $dlcq->id_CQ }}
                                             </div>
                                             <div class="modal-footer">
                                                 <form 

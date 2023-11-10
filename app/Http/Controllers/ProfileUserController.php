@@ -86,7 +86,7 @@ class ProfileUserController extends Controller
                 'ten' => $request->ten,
                 'phone' => $request->phone,
                 'email' => $request->email,
-                'id_CQ' => $request->id_CQ,
+                'id_CQ' => $request['id_CQ'],
             ]);
             $isSuccess = true;
 

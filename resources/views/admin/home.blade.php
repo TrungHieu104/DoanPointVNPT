@@ -127,7 +127,7 @@
         </div>
     </main>
 @endsection
-@push('script-access')
+{{-- @push('script-access')
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script type="text/javascript">
         // Get the flash message from the session
@@ -144,4 +144,4 @@
             });
         }
     </script>
-@endpush
+@endpush --}}

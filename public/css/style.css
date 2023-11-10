@@ -9,7 +9,7 @@
 }
 
 :root {
-	--light: #F9F9F9;
+	--light: white;
 	--green: #00A400;
 	--light-green: #d8ffcf;
 	--dark-green: #007a00;
@@ -536,15 +536,15 @@ body {
 }
 
 #content main .table-data>div {
-	border-radius: 20px;
+	border-radius: 5px;
 	background: var(--light);
 	/* background: #ffffff; */
 	padding: 24px;
 	overflow-x: auto;
 }
 .table{
-	--bs-table-color: var(--dark); 
-    --bs-table-bg: var(--light);
+	--bs-table-color: var(--dark) !important; 
+    --bs-table-bg: var(--light) !important;
 }
 
 #content main .table-data .head {
@@ -586,12 +586,12 @@ body {
 	padding: 16px 0;
 }
 
-#content main .table-data .order table tr td:first-child {
+/* #content main .table-data .order table tr td:first-child {
 	display: flex;
 	align-items: center;
 	grid-gap: 12px;
 	padding-left: 6px;
-}
+} */
 
 #content main .table-data .order table td img {
 	width: 36px;

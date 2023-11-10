@@ -11,7 +11,10 @@
                 <span class="text">Thông tin Đoàn viên</span>
             </a>
         </li>
-        <li class="{{ Route::currentRouteName() === 'list.index' || Route::currentRouteName() === 'list.create' || Route::currentRouteName() === 'list.edit' ? 'active' : '' }}">
+        <li class="{{ Route::currentRouteName() === 'list.index' 
+        || Route::currentRouteName() === 'list.create' 
+        || Route::currentRouteName() === 'list.edit' 
+        || Route::currentRouteName() === 'list.sort' ? 'active' : '' }}">
             <a href="{{ route('list.index') }}">
                 <i class='bx bxs-cloud-download'></i>
                 <span class="text">Điểm Đoàn viên</span>

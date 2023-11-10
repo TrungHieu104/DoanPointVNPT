@@ -12,9 +12,12 @@ class DanhGia extends Model
     protected $primaryKey = 'id_DG';
     protected $fillable = [
         'id_TC',
+        'ten_tieu_chi',
         'diem',
+        'diemQuyDinh',
         'link',
         'ghiChu',
+        'date',
         'id_DDG',
     ];
     public function tieuChi()

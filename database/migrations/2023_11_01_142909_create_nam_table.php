@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
-        Schema::table('dotdanhgia', function (Blueprint $table) {
+        Schema::create('nam', function (Blueprint $table) {
+            $table->id('id_nam');
+            $table->integer('nam')->default(0);
             $table->timestamps();
         });
     }
@@ -22,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('nam');
     }
 };

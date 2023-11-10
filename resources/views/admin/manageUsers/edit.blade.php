@@ -1,4 +1,7 @@
 @extends('admin.layout')
+@section('title')
+    Quản lý Đoàn viên thanh niên
+@endsection
 @section('content')
     <main>
         <div class="head-title">
@@ -14,7 +17,7 @@
                     </li>
                     <li><i class='bx bx-chevron-right'></i></li>
                     <li>
-                        <a class="" href="#">Sửa thông tin Đoàn viên</a>
+                        <a class="active" href="#">Sửa thông tin Đoàn viên</a>
                     </li>
 
                 </ul>

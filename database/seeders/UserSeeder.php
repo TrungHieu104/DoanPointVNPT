@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
     
         for ($i = 0; $i < 10; $i++) {
             $ht = Arr::random($ho). ' ' . Arr::random($lot). ' ' . Arr::random($ten);
-            $phone = rand(1000000000, 9999999999);
+            $phone = rand(100000000, 999999999);
     
             do {
                 $email = Str::random(3) . '@gmail.com';
@@ -30,14 +30,16 @@ class UserSeeder extends Seeder
     
             $usedEmails[] = $email;
     
-            $idCq = rand(1, 7);
+            $idCq = rand(1, 3);
     
             DB::table('users')->insert([
                 'ten' => $ht,
-                'phone' => $phone,
+                'phone' => 0 . $phone,
                 'email' => $email,
                 'password' => bcrypt('123'),
                 'id_CQ' => $idCq,
+                'created_at' => Now(), 
+                'updated_at' => Now(),
             ]);
         }
     }

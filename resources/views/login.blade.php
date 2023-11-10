@@ -45,14 +45,14 @@
                     <span class="login100-form-title  p-t-20 p-b-20">
                         Đăng nhập
                     </span>
-                    {{-- <div class="text-center p-b-20">
+                    <div class="text-center p-b-20">
                         <p class="txt1">
                             Chưa có tài khoản?
-                            <a class="txt1 txt1-color" href="#">
+                            <a class="txt1 txt1-color" href="{{url('register')}}">
                                 Đăng kí ngay
                             </a>
                         </p>
-                    </div> --}}
+                    </div>
                     
                     <div class="wrap-input100  validate-input" data-validate="Enter Gmail">
                         <input class="input100" type="text" name="email" placeholder="Gmail" autocomplete="off">
@@ -67,8 +67,8 @@
                     </div>
                     <!-- <span class="error-text">Error</span> -->
                     @if (Session::exists('thongbao'))
-                    <span class="error-text">{{ Session::get('thongbao') }}</span> 
-                @endif
+                        <span class="error-text">{{ Session::get('thongbao') }}</span> 
+                    @endif
 
                     <div class="contact100-form-checkbox m-t-10">
                         <input class="input-checkbox100" id="ckb1" type="checkbox" value="remember" name="remember">
@@ -79,13 +79,13 @@
                     
 
                     <div class="container-login100-form-btn ">
-                        <button class="login100-form-btn" type="submit">
+                        <button type="submit" class="send_OTP">
                             Đăng nhập
                         </button>
                     </div>
 
                     <div class="text-center rlt p-t-30">
-                        <a class="txt1" href="#">
+                        <a class="txt1" href="/forgot-password">
                             Quên mật khẩu?
                         </a>
                     </div>
@@ -110,7 +110,23 @@
     <script src="./vendor/countdowntime/countdowntime.js"></script>
     <!--===============================================================================================-->
     <script src="./js/main.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script type="text/javascript">
+        // Get the flash message from the session
+        var type = '{{ Session::get('alert.type') }}';
+        var msg = '{{ Session::get('alert.message') }}';
+        var text = '{{ Session::get('alert.text') ?? '' }}';
 
+        // Display the sweet alert message if it exists
+        if (msg) {
+            swal({
+                title: msg,
+                text: text,
+                icon: type,
+                button: "OK",
+            });
+        }
+    </script>
 </body>
 
 </html>
