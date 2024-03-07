@@ -18,32 +18,39 @@ use Illuminate\Support\Carbon;
 
 class PointUserController extends Controller
 {
-    protected $user;
+    protected $user, $thang, $quy, $nam;
     protected $perpage = 5;
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
             $this->user = Auth::user();
             $cq = CoQuan::find($this->user->id_CQ);
-            $thang = thang::all();
-            $quy = quy::all();
-            $nam = nam::all();
+            $this->thang = $thang = thang::all();
+            $this->quy = $quy = quy::all();
+            $this->nam = $nam = nam::all();
             view()->share(compact('cq', 'thang', 'quy', 'nam'));
             return $next($request);
         });
     }
-    function index($dotDG = null)
+    function index($dotDG = null, $text = '')
     {
-        $dotDG != null 
-        ? $data_list_point = $dotDG 
-        : $data_list_point = dotDanhGia::where('id_ND', $this->user->id)->orderby('id_DDG', 'desc')->paginate($this->perpage)->withQueryString();
+        $has_dotDG = false;
+        if($dotDG != null){
+
+            $data_list_point = $dotDG;
+            $has_dotDG = true;
+        }else
+            $data_list_point = dotDanhGia::where('id_ND', $this->user->id)->orderby('id_DDG', 'desc')->paginate($this->perpage)->withQueryString();
         $data_LDG = LoaiDanhGia::all();
-        // $nam = nam::all();
         $danhGias = DanhGia::get();
         $tieuChis = TieuChi::where('id_CQ', $this->user->id_CQ)->get();
+        // if($dotDG != null) return view("user.point.sort",compact('data_list_point', 'data_LDG', 'data_LDG', 'tieuChis', 'danhGias','text'));
+        // if($has_dotDG == false){
+        //     $displayPagination = $data_list_point->currentPage() > 1 || $data_list_point->hasMorePages();
+        // }
         return view(
-            "user.point.list",
-            compact('data_list_point', 'data_LDG', 'data_LDG', 'tieuChis', 'danhGias')
+            "user.point.list",  
+            compact('data_list_point', 'data_LDG', 'data_LDG', 'tieuChis', 'danhGias','text', 'has_dotDG')
         );
     }
     /**
@@ -96,6 +103,9 @@ class PointUserController extends Controller
         $dotDanhGia->tenDot = $request['tenDot'];
         $dotDanhGia->id_CQ = $this->user->id_CQ;
         $dotDanhGia->id_ND = $this->user->id;
+        $dotDanhGia->id_thang = $thang;
+        $dotDanhGia->id_quy = $quy;
+        $dotDanhGia->id_nam = $nam;
         $dotDanhGia->id_LDG = $id_LDG;
         $dotDanhGia->trangThai = 1;
         $dotDanhGia->date = Carbon::now();
@@ -103,7 +113,7 @@ class PointUserController extends Controller
         //save danhGia
         $tieuChis = TieuChi::where('id_CQ', $this->user->id_CQ)->get();
         foreach ($tieuChis as $tieuChi) {
-            if($request['diem'][$tieuChi->id_TC] !== null){
+            if ($request['diem'][$tieuChi->id_TC] !== null) {
                 $danhGia = new DanhGia;
                 $danhGia->ten_tieu_chi = $tieuChi->ten;
                 $danhGia->diem = $request['diem'][$tieuChi->id_TC];
@@ -136,7 +146,7 @@ class PointUserController extends Controller
         $dotDG = dotDanhGia::where('id_DDG', $id)->first();
         $tieuChis = TieuChi::where('id_CQ', $this->user->id_CQ)->get();
 
-        return view("user.point.edit", compact('tieuChis','dotDG','danhGias'));
+        return view("user.point.edit", compact('tieuChis', 'dotDG', 'danhGias'));
     }
 
     /**
@@ -187,33 +197,51 @@ class PointUserController extends Controller
 
         return redirect('/list')->with('alert', ['type' => 'success', 'message' => 'Xóa thông tin thành công !']);
     }
-    public function sort(Request $request){
-        $id_LDG = null;
+    public function sort(Request $request)
+    {
+        $dotDG = null;
+        $find = '';
         $thang = $request['thang'];
         $quy = $request['quy'];
         $nam = $request['nam'];
+        $year = nam::where('id_nam', $nam)->value('nam');
+
         if ($thang !== null && $nam !== null) {
-            $id_LDG = LoaiDanhGia::where('id_thang', $thang)
-                ->where('id_quy', null)
+            $dotDG = dotDanhGia::where('id_ND', $this->user->id)
+                ->where('id_thang', $thang)
                 ->where('id_nam', $nam)
-                ->value('id_LDG');
+                ->orderby('id_DDG', 'desc')
+                ->get();
+            $find = 'Tháng: ' . $thang . '- Năm: ' . $year;
         } else if ($quy !== null && $nam !== null) {
-            $id_LDG = LoaiDanhGia::where('id_thang', null)
+            $dotDG = dotDanhGia::where('id_ND', $this->user->id)
                 ->where('id_quy', $quy)
                 ->where('id_nam', $nam)
-                ->value('id_LDG');
+                ->orderby('id_DDG', 'desc')
+                ->get();
+            $find = 'Quý: ' . $quy . '- Năm: ' . $year;
+        } else if ($thang !== null) {
+            $dotDG = dotDanhGia::where('id_ND', $this->user->id)
+                ->where('id_thang', $thang)
+                ->orderby('id_DDG', 'desc')
+                ->get();
+            $find = 'Tháng: ' . $thang;
+        } else if ($quy !== null) {
+            $dotDG = dotDanhGia::where('id_ND', $this->user->id)
+                ->where('id_quy', $quy)
+                ->orderby('id_DDG', 'desc')
+                ->get();
+            $find = 'Quý: ' . $quy;
         } else if ($nam !== null) {
-            $id_LDG = LoaiDanhGia::where('id_thang', null)
-                ->where('id_quy', null)
+            $dotDG = dotDanhGia::where('id_ND', $this->user->id)
                 ->where('id_nam', $nam)
-                ->value('id_LDG');
+                ->orderby('id_DDG', 'desc')
+                ->get();
+            $find = 'Năm: ' . $year;
         }
-        if ($id_LDG === null) {
-            return redirect('/list')->with('alert', ['type' => 'warning', 'message' => 'Lỗi mã bị bỏ trống!']);
-        }
-        $dotDG = dotDanhGia::where('id_ND', $this->user->id)->where('id_LDG', $id_LDG)->orderby('id_DDG', 'desc')->paginate($this->perpage)->withQueryString();
-        return $this->index($dotDG);
-        // dd($dotDG);
+        $text = 'Kết quả tìm kiếm cho ' . $find;
+        if( $dotDG == null) return redirect('/list')->with('alert', ['type' => 'warning', 'message' => 'Lỗi mã bị bỏ trống!']);
+        return $this->index($dotDG, $text);
     }
 
 }

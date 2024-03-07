@@ -19,7 +19,13 @@ return new class extends Migration
             $table->dateTime('date')->nullable();
             $table->unsignedBigInteger('id_CQ');            
             $table->unsignedBigInteger('id_ND');            
-            $table->unsignedBigInteger('id_LDG');            
+            // $table->string('thang',10)->nullable();
+            // $table->string('quy',10)->nullable();
+            // $table->string('nam',10)->nullable();
+            $table->unsignedBigInteger('id_thang')->nullable();   
+            $table->unsignedBigInteger('id_quy')->nullable();   
+            $table->unsignedBigInteger('id_nam')->nullable();   
+            $table->unsignedBigInteger('id_LDG');   
             $table->foreign('id_CQ')->references('id_CQ')->on('coquan');
             $table->foreign('id_ND')->references('id')->on('users');
             $table->foreign('id_LDG')->references('id_LDG')->on('loaidanhgia');

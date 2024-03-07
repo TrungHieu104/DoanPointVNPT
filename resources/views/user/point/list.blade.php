@@ -13,7 +13,7 @@
                     </li>
                     <li><i class='bx bx-chevron-right'></i></li>
                     <li>
-                        <a class="active" href="{{route('list.index')}}">Điểm Đoàn viên</a>
+                        <a class="active" href="{{ route('list.index') }}">Điểm Đoàn viên</a>
                     </li>
 
                 </ul>
@@ -33,15 +33,15 @@
         <div class="card mt-4 text-center border-0">
             <div class="card-body">
                 <h5 class="card-title">Lọc kết quả</h5>
-                <form action="{{route('list.sort')}}" method="post">
+                <form action="{{ route('list.sort') }}" method="post">
                     @csrf
                     <div class="d-flex justify-content-center">
                         <div class="d-flex align-items-center m-3">
                             <span class="mx-3">Tháng</span>
                             <select class="form-select" name="thang" id="">
                                 <option selected value="">Lựa chọn tháng</option>
-                                @foreach ($thang as $thang)
-                                    <option value="{{ $thang->id_thang }}">{{ $thang->thang }}
+                                @foreach ($thang as $month)
+                                    <option value="{{ $month->id_thang }}">{{ $month->thang }}
                                     </option>
                                 @endforeach
                             </select>
@@ -50,8 +50,8 @@
                             <span class="mx-3">Quý</span>
                             <select class="form-select" name="quy" id="">
                                 <option selected value="">Lựa chọn quý</option>
-                                @foreach ($quy as $quy)
-                                    <option value="{{ $quy->id_quy }}">{{ $quy->quy }}</option>
+                                @foreach ($quy as $quarter)
+                                    <option value="{{ $quarter->id_quy }}">{{ $quarter->quy }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -74,10 +74,21 @@
         </div>
         <div class="table-data">
             <div class="accordion accordion-flush order">
+                @if ($text)
+                    <sub>
+                        <i>{{ $text }}</i>
+                    </sub> <br>
+                    <sub>
+                        <a href="{{ route('list.index') }}">Xóa bộ lọc</a>
+                    </sub><br>
+                @endif
                 @if ($data_list_point->isEmpty())
                     <span>Chưa có đánh giá nào</span>
                 @else
                     <table class="table">
+                        <sub>
+                            <i></i>
+                        </sub>
                         <thead>
                             <tr>
                                 <th scope="col">ID</th>
@@ -105,23 +116,23 @@
                                             <br>
                                             <sub>
                                                 <i>
-                                                    @foreach ($data_LDG as $dldg)
-                                                        @if ($dlp->id_LDG == $dldg->id_LDG)
-                                                            @foreach ($nam as $year)
-                                                                @if ($year->id_nam == $dldg->id_nam)
-                                                                    @if ($dldg->id_thang !== null && $dldg->id_nam !== null)
-                                                                        {{ 'Tháng : ' . $dldg->id_thang }}
-                                                                        {{ 'Năm : ' . $year->nam }}
-                                                                    @else
-                                                                        @if ($dldg->id_quy !== null && $dldg->id_nam !== null)
-                                                                            {{ 'Quý : ' . $dldg->id_quy }}
-                                                                            {{ 'Năm : ' . $year->nam }}
-                                                                        @else
-                                                                            {{ 'Năm : ' . $year->nam }}
-                                                                        @endif
-                                                                    @endif
+                                                    @foreach ($nam as $year)
+                                                        @if ($year->id_nam == $dlp->id_nam)
+                                                            @if ($dlp->id_thang !== null && $dlp->id_nam !== null)
+                                                                @foreach ($thang as $month)
+                                                                    {{ $month->id_thang == $dlp->id_thang ? 'Tháng : ' . $month->thang : '' }}
+                                                                @endforeach
+                                                                {{ 'Năm : ' . $year->nam }}
+                                                            @else
+                                                                @if ($dlp->id_quy !== null && $dlp->id_nam !== null)
+                                                                    @foreach ($quy as $quarter)
+                                                                        {{ $quarter->id_quy == $dlp->id_quy ? 'Quý : ' . $quarter->quy : '' }}
+                                                                    @endforeach
+                                                                    {{ 'Năm : ' . $year->nam }}
+                                                                @else
+                                                                    {{ 'Năm : ' . $year->nam }}
                                                                 @endif
-                                                            @endforeach
+                                                            @endif
                                                         @endif
                                                     @endforeach
                                                 </i>
@@ -202,50 +213,52 @@
                             @endforeach
                         </tbody>
                     </table>
-                    <div class="pagination-container">
-                        @if ($data_list_point->hasPages())
-                            <ul class="pagination">
-                                <!-- Previous Page Link -->
-                                @if ($data_list_point->onFirstPage())
-                                    <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
-                                @else
-                                    <li class="page-item"><a class="page-link"
-                                            href="{{ $data_list_point->previousPageUrl() }}">&laquo;</a></li>
-                                @endif
-
-                                <!-- Pagination Elements -->
-                                @foreach ($data_list_point->onEachSide(1)->links()->elements as $element)
-                                    <!-- "Three Dots" Separator -->
-                                    @if (is_string($element))
-                                        <li class="page-item disabled"><span class="page-link">{{ $element }}</span>
-                                        </li>
+                    @if(!$has_dotDG)
+                        <div class="pagination-container">
+                            @if ($data_list_point->hasPages())
+                                <ul class="pagination">
+                                    <!-- Previous Page Link -->
+                                    @if ($data_list_point->onFirstPage())
+                                        <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+                                    @else
+                                        <li class="page-item"><a class="page-link"
+                                                href="{{ $data_list_point->previousPageUrl() }}">&laquo;</a></li>
                                     @endif
 
-                                    <!-- Array Of Links -->
-                                    @if (is_array($element))
-                                        @foreach ($element as $page => $url)
-                                            @if ($page == $data_list_point->currentPage())
-                                                <li class="page-item active"><span
-                                                        class="page-link">{{ $page }}</span>
-                                                </li>
-                                            @else
-                                                <li class="page-item"><a class="page-link"
-                                                        href="{{ $url }}">{{ $page }}</a></li>
-                                            @endif
-                                        @endforeach
-                                    @endif
-                                @endforeach
+                                    <!-- Pagination Elements -->
+                                    @foreach ($data_list_point->onEachSide(1)->links()->elements as $element)
+                                        <!-- "Three Dots" Separator -->
+                                        @if (is_string($element))
+                                            <li class="page-item disabled"><span class="page-link">{{ $element }}</span>
+                                            </li>
+                                        @endif
 
-                                <!-- Next Page Link -->
-                                @if ($data_list_point->hasMorePages())
-                                    <li class="page-item"><a class="page-link"
-                                            href="{{ $data_list_point->nextPageUrl() }}">&raquo;</a></li>
-                                @else
-                                    <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
-                                @endif
-                            </ul>
-                        @endif
-                    </div>
+                                        <!-- Array Of Links -->
+                                        @if (is_array($element))
+                                            @foreach ($element as $page => $url)
+                                                @if ($page == $data_list_point->currentPage())
+                                                    <li class="page-item active"><span
+                                                            class="page-link">{{ $page }}</span>
+                                                    </li>
+                                                @else
+                                                    <li class="page-item"><a class="page-link"
+                                                            href="{{ $url }}">{{ $page }}</a></li>
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    @endforeach
+
+                                    <!-- Next Page Link -->
+                                    @if ($data_list_point->hasMorePages())
+                                        <li class="page-item"><a class="page-link"
+                                                href="{{ $data_list_point->nextPageUrl() }}">&raquo;</a></li>
+                                    @else
+                                        <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+                                    @endif
+                                </ul>
+                            @endif
+                        </div>
+                    @endif
                 @endif
             </div>
         </div>

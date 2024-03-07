@@ -41,6 +41,35 @@ class AuthController extends Controller
             return back()->with('thongbao', 'Email hoặc mật khẩu không đúng');
         }
     }
+    function api(Request $request)
+    {
+        // echo "hie";die();
+        // $attr = $request->validate([
+        //     'email' => 'required|string|email',
+        //     'password' => 'required|string'
+        // ]);
+        $attr = [
+            'email' => $request->email,
+            'password' => $request->password
+        ];
+        // return response()->json($attr);
+
+        if (auth()->attempt($attr)) {
+            return response()->json([
+                'is_success' => true,
+                'message' => 'Credentials not match',
+                'data' => auth()->user()->id,
+                'token' => $request->user()->createToken('API Token')->plainTextToken
+            ], 200);
+        }
+        
+        return response()->json([
+            'is_success' => false,
+            'message' => 'Credentials not match',
+            'data' => null,
+        ], 401);
+
+    }
 
     function logout()
     {

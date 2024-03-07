@@ -66,13 +66,13 @@ class ManageDanhGiaController extends AdminController
 
         return response()->json(['message' => 'Cập nhật thành công']);
     }
-    public function fetchData()
-    {
-        // Lấy dữ liệu từ cơ sở dữ liệu (ví dụ: sử dụng Eloquent)
-        $data = dotDanhGia::all();
+    // public function fetchData()
+    // {
+    //     // Lấy dữ liệu từ cơ sở dữ liệu (ví dụ: sử dụng Eloquent)
+    //     $data = dotDanhGia::all();
 
-        return response()->json($data);
-    }
+    //     return response()->json($data);
+    // }
 
 
 

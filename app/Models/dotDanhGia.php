@@ -14,9 +14,13 @@ class dotDanhGia extends Model
     protected $fillable = [
         'tenDot',
         'trangThai',
+        'ghiChu',
         'date',
         'id_CQ',
         'id_ND',
+        'id_thang',
+        'id_quy',
+        'id_nam',
         'id_LDG',
     ];
     public function total()

@@ -11,15 +11,15 @@ class DanhGia extends Model
     protected $table = 'danhgia';
     protected $primaryKey = 'id_DG';
     protected $fillable = [
-        'id_TC',
         'ten_tieu_chi',
         'diem',
         'diemQuyDinh',
         'link',
         'ghiChu',
         'date',
+        'id_TC',
         'id_DDG',
-    ];
+    ];  
     public function tieuChi()
     {
         return $this->belongsTo(TieuChi::class, 'id_TC');
